@@ -12,11 +12,17 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function DatePicker() {
+// Define the prop for passing the date back to parent
+interface DatePickerProps {
+  onDateChange: (date: Date | undefined) => void;
+}
+
+export function DatePicker({ onDateChange }: DatePickerProps) {
   const [date, setDate] = React.useState<Date | undefined>(undefined); // Use undefined instead of null
 
   const handleDateChange = (selectedDate: Date | undefined) => {
     setDate(selectedDate); // Update state with the selected date or undefined
+    onDateChange(selectedDate); // Call the passed prop to notify parent
     if (selectedDate) {
       console.log("Selected Date:", format(selectedDate, "PPP"));
     }
@@ -28,7 +34,7 @@ export function DatePicker() {
         <Button
           variant={"outline"}
           className={cn(
-            "w-[280px] justify-start text-left font-normal",
+            "justify-start text-left font-normal",
             !date && "text-muted-foreground"
           )}
         >
@@ -39,7 +45,7 @@ export function DatePicker() {
       <PopoverContent className="w-auto p-0">
         <Calendar
           mode="single"
-          selected={date} 
+          selected={date}
           onSelect={handleDateChange}
           initialFocus
         />

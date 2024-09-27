@@ -1,21 +1,88 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import TherapistCard from "@/components/TherapistCard";
-import { DatePicker } from "@/components/ui/datePicker"; // Import DatePicker
+import { DatePicker } from "@/components/ui/datePicker";
+
+function debounce(func: (...args: any) => void, wait: number) {
+  let timeout: NodeJS.Timeout;
+  return (...args: any) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+}
 
 export default function ConsultationPage() {
   const [selectedOption, setSelectedOption] = useState("");
-  const [selectedFilter, setSelectedFilter] = useState<"online" | "offline" | null>(null);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null); // State to hold the selected date
+  const [selectedFilter, setSelectedFilter] = useState<
+    "online" | "offline" | null
+  >(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [location, setLocation] = useState<string>("");
+  const [therapists, setTherapists] = useState([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const fetchTherapists = async (
+    dateStr = "",
+    consultationType = "",
+    location = ""
+  ) => {
+    setLoading(true);
+    setErrorMessage("");
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/therapists?consultation=${consultationType}&location=${location}&date=${dateStr}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setTherapists(data);
+        if (data.length === 0) {
+          setErrorMessage("No therapists found for the selected criteria.");
+        }
+      } else {
+        console.error("Error fetching therapists:", response.statusText);
+        setErrorMessage("Error fetching therapists.");
+      }
+    } catch (error) {
+      console.error("Error fetching therapists:", error);
+      setErrorMessage("Error fetching therapists.");
+    }
+    setLoading(false);
+  };
+
+  const formatDate = (date: Date | null): string => {
+    if (!date) return "";
+    const timezoneOffset = date.getTimezoneOffset() * 60000;
+    const localISODate = new Date(date.getTime() - timezoneOffset)
+      .toISOString()
+      .split("T")[0];
+    return localISODate;
+  };
+
+  useEffect(() => {
+    fetchTherapists();
+  }, []);
+
+  useEffect(() => {
+    const dateStr = formatDate(selectedDate);
+    fetchTherapists(dateStr, selectedFilter || "", location);
+  }, [selectedDate, selectedFilter, location]);
 
   const handleFilterClick = (filter: "online" | "offline") => {
     setSelectedFilter(filter);
   };
 
-  const handleDropdownChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedOption(event.target.value);
+  const handleDateChange = (date: Date | undefined) => {
+    setSelectedDate(date ? date : null);
   };
+
+  const handleLocationChange = useCallback(
+    debounce((newLocation: string) => {
+      setLocation(newLocation);
+    }, 1000),
+    []
+  );
 
   const handleChat = () => {
     console.log("Chat button clicked");
@@ -23,12 +90,6 @@ export default function ConsultationPage() {
 
   const handleAppointment = () => {
     console.log("Appointment button clicked");
-  };
-
-  // Callback to get date from DatePicker
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
-    console.log("Selected Date:", date);
   };
 
   return (
@@ -44,7 +105,11 @@ export default function ConsultationPage() {
                 alt="Online"
                 width={300}
                 height={300}
-                className={`w-28 h-32 cursor-pointer rounded-md p-4 ${selectedFilter === "online" ? "bg-[#FFCB69] border border-black" : ""}`}
+                className={`w-28 h-32 cursor-pointer rounded-md p-4 ${
+                  selectedFilter === "online"
+                    ? "bg-[#FFCB69] border border-black"
+                    : ""
+                }`}
                 onClick={() => handleFilterClick("online")}
               />
               <Image
@@ -52,21 +117,35 @@ export default function ConsultationPage() {
                 alt="Offline"
                 width={100}
                 height={100}
-                className={`w-28 h-32 cursor-pointer rounded-md p-4 ${selectedFilter === "offline" ? "bg-[#FFCB69] border border-black" : ""}`}
+                className={`w-28 h-32 cursor-pointer rounded-md p-4 ${
+                  selectedFilter === "offline"
+                    ? "bg-[#FFCB69] border border-black"
+                    : ""
+                }`}
                 onClick={() => handleFilterClick("offline")}
               />
             </div>
 
             {/* DatePicker Component */}
-            <div className="flex flex-col gap-4 w-full">
-              <DatePicker />
+            <div className="flex flex-col gap-4">
+              <DatePicker onDateChange={handleDateChange} />
+            </div>
+
+            {/* Location Input with Debounce */}
+            <div className="flex flex-col gap-4">
+              <input
+                type="text"
+                placeholder="Enter location"
+                onChange={(e) => handleLocationChange(e.target.value)} // Using debounced handler
+                className="py-2 px-4 bg-[#FFEAD1] rounded-md text-black"
+              />
             </div>
 
             <div className="flex flex-col gap-4">
               <select
                 id="sorting"
                 value={selectedOption}
-                onChange={handleDropdownChange}
+                onChange={(e) => setSelectedOption(e.target.value)}
                 className="py-2 px-4 bg-[#FFEAD1] rounded-md text-black"
               >
                 <option value="">Atur Berdasarkan</option>
@@ -79,16 +158,30 @@ export default function ConsultationPage() {
           </div>
         </div>
 
+        {/* Therapist Cards */}
         <div className="w-full lg:w-3/4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <TherapistCard
-              name="Dr. Abraham"
-              location="Bandung"
-              image="/therapist.png"
-              onChat={handleChat}
-              onAppointment={handleAppointment}
-            />
-          </div>
+          {loading ? (
+            <div>Loading therapists...</div>
+          ) : (
+            <>
+              {errorMessage ? (
+                <div>{errorMessage}</div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {therapists.map((therapist: any, index: number) => (
+                    <TherapistCard
+                      key={index}
+                      name={therapist.User.name}
+                      location={therapist.Location}
+                      image={therapist.User.image_url}
+                      onChat={handleChat}
+                      onAppointment={handleAppointment}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>
