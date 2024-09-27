@@ -9,12 +9,21 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-popover": "^1.1.1",
+    "@radix-ui/react-slot": "^1.1.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "cookies-next": "^4.2.1",
+    "date-fns": "^3.6.0",
+    "lucide-react": "^0.446.0",
     "next": "14.2.13",
     "react": "^18",
+    "react-day-picker": "^8.10.1",
     "react-dom": "^18",
     "socket.io-client": "^4.8.0",
-    "socket.io-msgpack-parser": "^3.0.2"
+    "socket.io-msgpack-parser": "^3.0.2",
+    "tailwind-merge": "^2.5.2",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/node": "^20",
