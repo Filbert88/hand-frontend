@@ -83,3 +83,75 @@ h1 {
     @apply bg-background text-foreground;
   }
 }
+
+
+/* Adding Teachers Font-Face Definitions */
+@font-face {
+  font-family: 'Teachers';
+  src: url('/fonts/Teachers-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Teachers';
+  src: url('/fonts/Teachers-Medium.ttf') format('truetype');
+  font-weight: 500; 
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Teachers';
+  src: url('/fonts/Teachers-SemiBold.ttf') format('truetype');
+  font-weight: 600; 
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Teachers';
+  src: url('/fonts/Teachers-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Teachers';
+  src: url('/fonts/Teachers-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Teachers';
+  src: url('/fonts/Teachers-BoldItalic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Teachers';
+  src: url('/fonts/Teachers-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Teachers';
+  src: url('/fonts/Teachers-SemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Teachers';
+  src: url('/fonts/Teachers-ExtraBold.ttf') format('truetype');
+  font-weight: 800; 
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Teachers';
+  src: url('/fonts/Teachers-ExtraBoldItalic.ttf') format('truetype');
+  font-weight: 800;
+  font-style: italic;
+}
