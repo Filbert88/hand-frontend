@@ -1,6 +1,6 @@
 "use client"; // This will ensure the component is treated as a Client Component
 
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Toaster, toast } from "sonner";
 
@@ -40,6 +40,7 @@ const RegisterForm: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,14 +78,16 @@ const RegisterForm: React.FC = () => {
       // Handle API response
       if (response.ok) {
         toast.success("Registration successful!");
-        // Optionally reset form fields
+
         setName("");
         setEmail("");
         setPassword("");
         setConfirmPassword("");
         setPhoneNumber("");
 
-        redirect("/");
+        setTimeout(() => {
+          router.push("/login");
+        }, 1500);
       } else {
         const errorData = await response.json();
         toast.error(`Registration failed: ${errorData.message}`);
