@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { setCookie } from "cookies-next";
+import { toast, Toaster } from "sonner";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -12,8 +12,9 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Validate email and password fields
     if (!email || !password) {
-      setError("Both email and password are required.");
+      toast.error("Both email and password are required.");
       return;
     }
 
@@ -26,33 +27,35 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
+      // If login fails
       if (!res.ok) {
-        throw new Error("Login failed");
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Login failed");
       }
 
-      const data = await res.json();
+      toast.success("Login successful!");
 
-      const access_token = data?.token;
-      const user_role = data?.user?.role;
-      const user_id = data?.user?.id;
-
-      if (access_token) {
-        setCookie("authToken", access_token, { path: "/" });
-        setCookie("userRole", user_role, { path: "/" });
-        setCookie("userId", user_id, { path: "/" });
-      }
-
-      router.push("/");
+      setTimeout(() => {
+        router.push("/");
+      }, 1500);
     } catch (err) {
-      setError("Login failed. Please check your credentials.");
-      console.error(err);
+      if (err instanceof Error) {
+        setError(err.message || "Login failed. Please check your credentials.");
+        toast.error(
+          err.message || "Login failed. Please check your credentials."
+        );
+      } else {
+        setError("An unknown error occurred.");
+        toast.error("An unknown error occurred.");
+      }
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-blue-50">
+      <Toaster position="bottom-right" richColors />{" "}
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-auto w-full">
-        <h1 className="text-2xl font-bold text-center mb-4">
+        <h1 className="text-3xl font-bold text-center mb-4">
           Hi! Nice to meet You again!
         </h1>
 
