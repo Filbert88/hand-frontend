@@ -11,10 +11,12 @@
   "dependencies": {
     "cookies-next": "^4.2.1",
     "next": "14.2.13",
+    "next-themes": "^0.3.0",
     "react": "^18",
     "react-dom": "^18",
     "socket.io-client": "^4.8.0",
-    "socket.io-msgpack-parser": "^3.0.2"
+    "socket.io-msgpack-parser": "^3.0.2",
+    "sonner": "^1.5.0"
   },
   "devDependencies": {
     "@types/node": "^20",
