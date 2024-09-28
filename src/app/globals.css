@@ -155,3 +155,10 @@ h1 {
   font-weight: 800;
   font-style: italic;
 }
+
+@font-face {
+  font-family: 'Gloock';
+  src: url('/fonts/Gloock-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
