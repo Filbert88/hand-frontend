@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast, Toaster } from "sonner";
+import { setCookie } from "cookies-next";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -32,7 +33,11 @@ export default function LoginPage() {
         const errorData = await res.json();
         throw new Error(errorData.message || "Login failed");
       }
-
+      const data = await res.json();
+      console.log(data)
+      setCookie("authToken", data.token, { path: "/" });
+      setCookie("user_id",data.user.ID , { path: "/" });
+      setCookie("user_role",data.user.role, {path: '/'});
       toast.success("Login successful!");
 
       setTimeout(() => {
