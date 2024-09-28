@@ -11,7 +11,7 @@ export default function FloatingBar() {
 
   const icons = [
     { src: "/floatingBar/checkin.svg", page: "/check-in" },
-    { src: "/floatingBar/chatAnon.svg", page: "/chat-anonymous" },
+    { src: "/floatingBar/chatAnon.svg", page: "/consultation" },
     { src: "/floatingBar/journal.svg", page: "/journal" },
     { src: "/floatingBar/mindfullness.svg", page: "/mindfullness" },
     { src: "/floatingBar/profile.svg", page: "/profile" },
