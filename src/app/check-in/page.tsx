@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { getTodayCheckIn, createCheckIn, updateCheckIn, CheckInData } from '../api/service'; // Adjust path as necessary
+import { toast } from 'sonner';
 
 
 const emotions = [
@@ -67,14 +68,18 @@ export default function MoodTracker() {
       let response;
       if (isUpdating) {
         // Update existing check-in
+        console.log(checkInData)
         response = await updateCheckIn(checkInData);
+        toast.success("Update successful")
       } else {
         // Create new check-in
         response = await createCheckIn(checkInData);
+        toast.success("Create succesful")
       }
       console.log('CheckIn Success:', response);
       // Handle success (e.g., show a message, redirect)
     } catch (error) {
+      console.log("Check-in failed")
       console.error('Error during check-in operation:', error);
     }
   };
@@ -82,13 +87,13 @@ export default function MoodTracker() {
   return (
     <div className="min-h-screen max-h-screen bg-[#FFF2F2] flex items-center justify-center p-4 font-gloock">
       <div className="rounded-lg px-10 md:px-20 lg:px-40 w-full h-full">
-        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-6xl xl:text-7xl tracking-wider font-bold text-center mb-6">How are you doing today?</h1>
+        <h1 className="text-2xl sm:text-2xl md:text-3xl lg:text-6xl xl:text-7xl font-bold text-center mb-6">How are you doing today?</h1>
         <p className="text-center text-sm md:text-lg lg:text-xl xl:text-2xl tracking-wider text-gray-600 mb-4">Pick your most dominant emotion right now</p>
         <div className="flex justify-center flex-wrap space-x-2 mb-6">
           {emotions.map((emotion, index) => (
             <button
               key={emotion.id}
-              className={`rounded-xl flex items-center justify-center text-2xl transition hover:bg-gray-400 duration-300 ${
+              className={`rounded-full flex items-center justify-center text-2xl transition hover:bg-gray-400 duration-300 ${
                 selectedEmotion === index ? 'bg-gray-400' : ''
               }`}
               onClick={() => setSelectedEmotion(index)}

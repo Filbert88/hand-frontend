@@ -38,6 +38,7 @@ export default function LoginPage() {
       setCookie("authToken", data.token, { path: "/" });
       setCookie("user_id",data.user.ID , { path: "/" });
       setCookie("user_role",data.user.role, {path: '/'});
+      setCookie("user_name",data.user.name, {path: '/'});
       toast.success("Login successful!");
 
       setTimeout(() => {
