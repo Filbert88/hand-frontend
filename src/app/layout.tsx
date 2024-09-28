@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/navbar";
+import FloatingBar from "@/components/floatingBar";
 
 import { Toaster } from "sonner";
 
@@ -33,6 +34,7 @@ export default function RootLayout({
       >
         <Navbar/>
         {children}
+        <FloatingBar />
         <Toaster position="bottom-right" richColors />{" "}
       </body>
     </html>
