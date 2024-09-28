@@ -29,11 +29,11 @@ export default function Navbar() {
           </Button>
         </div>
         <div className="hidden lg:flex items-center space-x-16 py-3 text-xl">
-          <Link href="/login" className="text-gray-700 hover:text-gray-900 relative group pb-2">
+          <Link href="/auth/login" className="text-gray-700 hover:text-gray-900 relative group pb-2">
             Log In
             <span className="absolute left-0 bottom-0 w-full h-0.5 bg-gray-900 transform scale-x-0 transition-transform duration-300 ease-in-out group-hover:scale-x-100"></span>
           </Link>
-          <Link href="/signup" className="text-gray-700 hover:text-gray-900 relative group pb-2">
+          <Link href="/auth/register" className="text-gray-700 hover:text-gray-900 relative group pb-2">
             Sign Up
             <span className="absolute left-0 bottom-0 w-full h-0.5 bg-gray-900 transform scale-x-0 transition-transform duration-300 ease-in-out group-hover:scale-x-100"></span>
           </Link>

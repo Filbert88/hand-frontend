@@ -56,11 +56,11 @@ export default function Page() {
   };
 
   return (
-    <div className="px-10 sm:px-20 pt-10 flex flex-col bg-[#E8F2F3] min-h-screen">
+    <div className="px-10 sm:px-20 pt-28 flex flex-col bg-[#E8F2F3] min-h-screen">
       <h1 className="text-center text-3xl">Let Us Help You!</h1>
-      <div className="relative mt-4">
+      <div className="relative mt-4 font-teachers">
         <input
-          className="px-4 py-3 w-full bg-white rounded-xl focus:outline-none sm:text-base text-sm"
+          className="px-4 py-3 w-full bg-white rounded-xl focus:outline-none sm:text-base text-sm font-teachers"
           placeholder="What trouble do you have?"
           value={inputValue}
           onChange={handleInputChange}
@@ -85,12 +85,12 @@ export default function Page() {
           </svg>
         </button>
       </div>
-      <div className="mt-6">
+      <div className="mt-6 font-teachers text-opacity-60">
         <Accordion type="single" collapsible className="w-full">
           {filteredData.map((item, index) => (
             <AccordionItem key={index} value={`item-${index}`}>
-              <AccordionTrigger>{item.title}</AccordionTrigger>
-              <AccordionContent>{item.content}</AccordionContent>
+              <AccordionTrigger className="text-opacity-60 text-gray-900">{item.title}</AccordionTrigger>
+              <AccordionContent className="text-opacity-60 text-gray-900">{item.content}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
