@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { format } from "date-fns";
+import { format, isBefore, isToday } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -12,13 +12,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-// Define the prop for passing the date back to parent
+// Define the prop for passing the date back to the parent
 interface DatePickerProps {
   onDateChange: (date: Date | undefined) => void;
 }
 
 export function DatePicker({ onDateChange }: DatePickerProps) {
-  const [date, setDate] = React.useState<Date | undefined>(undefined); // Use undefined instead of null
+  const [date, setDate] = React.useState<Date | undefined>(new Date()); // Default to today's date
 
   const handleDateChange = (selectedDate: Date | undefined) => {
     setDate(selectedDate); // Update state with the selected date or undefined
@@ -26,6 +26,11 @@ export function DatePicker({ onDateChange }: DatePickerProps) {
     if (selectedDate) {
       console.log("Selected Date:", format(selectedDate, "PPP"));
     }
+  };
+
+  // Disable past dates by checking if the date is before today
+  const disablePastDates = (day: Date) => {
+    return isBefore(day, new Date()) && !isToday(day);
   };
 
   return (
@@ -39,7 +44,7 @@ export function DatePicker({ onDateChange }: DatePickerProps) {
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {date ? format(date, "PPP") : <span>Pilih Tanggal</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
@@ -47,6 +52,7 @@ export function DatePicker({ onDateChange }: DatePickerProps) {
           mode="single"
           selected={date}
           onSelect={handleDateChange}
+          disabled={disablePastDates} // Disable past dates
           initialFocus
         />
       </PopoverContent>

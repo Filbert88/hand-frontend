@@ -12,7 +12,7 @@ export async function getTherapistDetails(therapistId: string) {
     );
     const data = await response.json();
     if (response.ok) {
-      return data.therapist; // Assuming the therapist is returned as a key in the object
+      return data.therapist;
     } else {
       throw new Error(data.message || "Error fetching therapist details");
     }
@@ -23,8 +23,8 @@ export async function getTherapistDetails(therapistId: string) {
 
 export async function getTherapistSchedule(
   therapistId: string,
-  date: string | null = null, // Change date type to string | null
-  consultationType: string | null = null // Ensure consultationType is string | null
+  date: string | null = null,
+  consultationType: string | null = null
 ) {
   let queryParams = `?`;
   if (date) {
