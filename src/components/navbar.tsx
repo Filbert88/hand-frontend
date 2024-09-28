@@ -21,7 +21,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-gray-100 p-4 font-teachers relative">
+    <nav className="fixed bg-transparent p-4 font-teachers w-screen ">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex lg:hidden">
           <Button variant="ghost" size="icon" aria-label="Menu" onClick={toggleMenu}>

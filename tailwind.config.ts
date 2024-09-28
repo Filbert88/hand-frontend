@@ -10,7 +10,8 @@ const config: Config = {
   theme: {
   	extend: {
 		fontFamily: {
-			'teachers': ['Teachers', 'sans-serif'] // Include a sans-serif fallback
+			'teachers': ['Teachers', 'sans-serif'] ,
+			'gloock' : ['Gloock', 'sans-serif']
 		},
   		colors: {
   			background: 'hsl(var(--background))',
