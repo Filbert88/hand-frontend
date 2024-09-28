@@ -63,7 +63,10 @@ const TherapistPage: React.FC<TherapistPageProps> = ({ params }) => {
             <TherapistDetails therapist={therapistDetails} />
           </div>
           <div className="w-full md:w-1/2">
-            <Schedule therapistId={therapistId} />
+            <Schedule
+              consultationType={therapistDetails.consultation_type}
+              therapistId={therapistId}
+            />
           </div>
         </div>
       </main>

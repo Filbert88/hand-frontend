@@ -4,6 +4,9 @@ export async function createAppointment(appointmentData: {
   consultationType: string;
 }) {
   try {
+    // Ensure date is in ISO format (RFC3339) to match backend format
+    const formattedDate = appointmentData.date.toISOString();
+
     const response = await fetch(
       "http://localhost:8080/api/appointment/create-appointment",
       {
@@ -12,9 +15,14 @@ export async function createAppointment(appointmentData: {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(appointmentData),
+        body: JSON.stringify({
+          therapist_id: appointmentData.therapistId,
+          date: formattedDate,
+          consultation_type: appointmentData.consultationType,
+        }),
       }
     );
+
     const data = await response.json();
     if (response.ok) {
       console.log("Appointment Created:", data);
