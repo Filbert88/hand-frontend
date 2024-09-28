@@ -92,7 +92,7 @@ export default function Navbar() {
           {isLoggedIn ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center space-x-2">
+                <Button variant="ghost" className="flex items-center space-x-2 z-0">
                   <Image
                     src="/profile.png"
                     alt="Profile"
