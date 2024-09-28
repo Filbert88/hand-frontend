@@ -1,30 +1,52 @@
-import { X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { postMedicationTransaction } from '@/app/api/medicationService'; // Import the API call
 
 export interface CartItem {
-  id: string
-  name: string
-  quantity: number
-  price: number
-  image: string
+  id: string;
+  name: string;
+  quantity: number;
+  price: number;
+  image: string;
 }
 
 interface CartPopupProps {
-  onClose: () => void
-  onRemove: (id: string) => void
+  onClose: () => void;
+  onRemove: (id: string) => void;
 }
 
 export default function CartPopup({ onClose, onRemove }: CartPopupProps) {
   
-  
     const storedCart = localStorage.getItem('userCart');
     let newCart: CartItem[] = [];
     if (storedCart) {
-      newCart = JSON.parse(storedCart)
+      newCart = JSON.parse(storedCart);
     }
 
-    const totalPrice = newCart.reduce((total, item) => total + item.price * item.quantity, 0)
-  
+    const totalPrice = newCart.reduce((total, item) => total + item.price * item.quantity, 0);
+
+    const handleCheckout = async () => {
+        // Format the data for the API
+        const checkoutData = {
+            allItem: newCart.map(item => ({
+                medicationId: item.id,
+                name:item.name,
+                price: item.price,
+                quantity: item.quantity,
+
+            })),
+            totalPrice
+        };
+
+        try {
+            const result = await postMedicationTransaction(checkoutData);
+            localStorage.removeItem('userCart');
+            onClose(); // Close the cart popup on successful checkout
+        } catch (error) {
+            console.error('Checkout Failed:', error);
+        }
+    };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div className="bg-[#FFF2F7] p-8 rounded-lg w-[500px]">
@@ -58,7 +80,7 @@ export default function CartPopup({ onClose, onRemove }: CartPopupProps) {
                 <span>Total:</span>
                 <span>Rp{totalPrice.toLocaleString()}</span>
               </div>
-              <Button className="w-full bg-pink-500 text-white hover:bg-pink-600 py-3 text-lg">
+              <Button className="w-full bg-pink-500 text-white hover:bg-pink-600 py-3 text-lg" onClick={handleCheckout}>
                 Checkout
               </Button>
             </div>
