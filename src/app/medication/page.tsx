@@ -1,10 +1,11 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Search, ShoppingCart, X, Minus, Plus } from 'lucide-react'
+import { Search, ShoppingCart, X, Minus, Plus, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import CartPopup, { CartItem } from '@/components/cartPopup'
-import { getAllMedications } from '../api/medicatiion'
+import { getAllMedications } from '../api/medicationService'
+import { useRouter } from 'next/navigation'
 
 
 export interface Medication {
@@ -28,12 +29,15 @@ export interface Medication {
     const [showQuantityPopup, setShowQuantityPopup] = useState(false);
     const [selectedMedication, setSelectedMedication] = useState<Medication | null>(null);
     const [quantity, setQuantity] = useState(1);
+
+    const router = useRouter()
   
     // Fetch medications on component mount
     useEffect(() => {
       async function fetchMedications() {
         try {
           const fetchedMedications = await getAllMedications();
+          console.log(fetchMedications)
           setMedications(fetchedMedications);
         } catch (error) {
           console.error('Failed to fetch medications:', error);
@@ -101,18 +105,35 @@ export interface Medication {
         <div className="px-10 py-20 md:py-30 md:px-20 lg:py-36 lg:px-40">
           <div className='flex flex-row justify-between items-center mb-4'>
             <h1 className="text-2xl sm:text-2xl md:text-3xl lg:text-6xl xl:text-7xl font-bold mb-4">What do you need?</h1>
-            <div className='sm:block hidden'>
-              <Button
-                className='bg-[#FFD3E4] text-pink-600 hover:bg-pink-200'
-                size={'lg'}
+            <div className='flex flex-row gap-2'>
+                <Button
+                className='bg-[#FFD3E4] text-pink-600 hover:bg-pink-200 group relative'
+                size={'default'}
                 onClick={() => {
-                  loadCartFromStorage();
-                  setShowCart(true);
+                    loadCartFromStorage();
+                    setShowCart(true);
                 }}
-              >
-                <ShoppingCart className="mr-2 h-5 w-5" />
-                View My Cart
-              </Button>
+                >
+                <ShoppingCart className="h-5 w-5 md:mr-2" />
+                <span className="hidden md:inline">View My Cart</span>
+                <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap md:hidden mb-2">
+                    View My Cart
+                </span>
+                </Button>
+                <Button
+                className='bg-[#FFD3E4] text-pink-600 hover:bg-pink-200 group relative'
+                size={'default'}
+                onClick={() => {
+                    // Add logic to view purchase history
+                    router.push('/medication/history');
+                }}
+                >
+                <Clock className="h-5 w-5 md:mr-2" />
+                <span className="hidden md:inline">Purchase History</span>
+                <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap md:hidden mb-2">
+                    Purchase History
+                </span>
+                </Button>
             </div>
           </div>
   
@@ -127,19 +148,6 @@ export interface Medication {
             />
           </div>
   
-          <div className='sm:hidden flex w-full justify-end mb-5'>
-            <Button
-              className='bg-[#FFD3E4] text-pink-600 hover:bg-pink-200'
-              size={'lg'}
-              onClick={() => {
-                loadCartFromStorage();
-                setShowCart(true);
-              }}
-            >
-              <ShoppingCart className="mr-2 h-5 w-5" />
-              View My Cart
-            </Button>
-          </div>
   
           <div className="flex flex-wrap flex-row sm:justify-start justify-center w-full gap-5 ">
             {medications
