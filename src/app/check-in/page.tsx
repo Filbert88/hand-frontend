@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { getTodayCheckIn, createCheckIn, updateCheckIn, CheckInData } from '../api/service'; // Adjust path as necessary
+import { toast } from 'sonner';
 
 
 const emotions = [
@@ -69,13 +70,16 @@ export default function MoodTracker() {
         // Update existing check-in
         console.log(checkInData)
         response = await updateCheckIn(checkInData);
+        toast.success("Update successful")
       } else {
         // Create new check-in
         response = await createCheckIn(checkInData);
+        toast.success("Create succesful")
       }
       console.log('CheckIn Success:', response);
       // Handle success (e.g., show a message, redirect)
     } catch (error) {
+      console.log("Check-in failed")
       console.error('Error during check-in operation:', error);
     }
   };
