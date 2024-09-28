@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import TherapistCard from "@/components/TherapistCard";
 import { DatePicker } from "@/components/ui/datePicker";
+import { useRouter } from "next/navigation";
 
 function debounce(func: (...args: any) => void, wait: number) {
   let timeout: NodeJS.Timeout;
@@ -13,6 +14,7 @@ function debounce(func: (...args: any) => void, wait: number) {
 }
 
 export default function ConsultationPage() {
+  const router = useRouter();
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedFilter, setSelectedFilter] = useState<
     "online" | "offline" | null
@@ -37,6 +39,7 @@ export default function ConsultationPage() {
       if (response.ok) {
         const data = await response.json();
         setTherapists(data);
+
         if (data.length === 0) {
           setErrorMessage("No therapists found for the selected criteria.");
         }
@@ -50,6 +53,7 @@ export default function ConsultationPage() {
     }
     setLoading(false);
   };
+  console.log(therapists, "ini data terapis");
 
   const formatDate = (date: Date | null): string => {
     if (!date) return "";
@@ -88,8 +92,9 @@ export default function ConsultationPage() {
     console.log("Chat button clicked");
   };
 
-  const handleAppointment = () => {
-    console.log("Appointment button clicked");
+  const handleAppointment = (therapistId: string) => {
+    // Redirect to the dynamic appointment page for the therapist
+    router.push(`/appointment/${therapistId}`);
   };
 
   return (
@@ -175,7 +180,7 @@ export default function ConsultationPage() {
                       location={therapist.Location}
                       image={therapist.User.image_url}
                       onChat={handleChat}
-                      onAppointment={handleAppointment}
+                      onAppointment={() => handleAppointment(therapist.UserID)} // Pass the therapistId to the function
                     />
                   ))}
                 </div>

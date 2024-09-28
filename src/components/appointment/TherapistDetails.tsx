@@ -1,59 +1,75 @@
 import Image from "next/image";
+import { MapPin, Phone, CreditCard, MessageCircle } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 
-export const TherapistDetails: React.FC = () => {
+interface TherapistDetailsProps {
+  therapist: {
+    name: string;
+    location: string;
+    image_url: string;
+    appointment_rate: number;
+    consultation_type: string;
+    phone_number: string;
+    specialization: string;
+  };
+}
+
+export const TherapistDetails: React.FC<TherapistDetailsProps> = ({
+  therapist,
+}) => {
   return (
-    <div className="flex-1 p-8 bg-[#FFF3E5] rounded-lg shadow-lg">
-      <div className="flex gap-4">
-        <Image
-          src="/path-to-your-image.jpg" // Replace with a valid image path
-          alt="Profile Photo"
-          width={150}
-          height={150}
-          className="rounded-lg"
-        />
-        <div>
-          <h2 className="text-2xl font-bold">Dr. Abraham</h2>
-          <p>Lokasi: Bandung</p>
-          <p>Biaya: Rp 50k/jam</p>
-          <p>Asuransi: Bisa</p>
-          <div>
-            <p className="font-semibold">Sertifikasi:</p>
-            <ul className="list-disc list-inside">
-              <li>Spesialis BCT</li>
-              <li>Spesialis ABC</li>
-            </ul>
+    <Card className="bg-[#FFF3E5] shadow-lg w-full h-full">
+      <CardContent className="p-6">
+        <div className="flex flex-col lg:flex-row gap-6">
+          <div className="flex-shrink-0 w-full lg:w-1/3">
+            <Image
+              src={therapist.image_url}
+              alt={`${therapist.name}'s profile photo`}
+              width={300}
+              height={300}
+              className="rounded-lg object-cover w-full h-auto"
+            />
+          </div>
+          <div className="flex flex-col justify-between w-full lg:w-2/3">
+            <div>
+              <h2 className="text-3xl font-bold mb-4">{therapist.name}</h2>
+              <div className="space-y-3 text-lg">
+                <div className="flex items-center gap-3">
+                  <MapPin className="w-6 h-6 text-gray-500" />
+                  <span>{therapist.location}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <CreditCard className="w-6 h-6 text-gray-500" />
+                  <span>Rp {therapist.appointment_rate.toLocaleString()}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <MessageCircle className="w-6 h-6 text-gray-500" />
+                  <span>{therapist.consultation_type}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Phone className="w-6 h-6 text-gray-500" />
+                  <span>{therapist.phone_number}</span>
+                </div>
+              </div>
+            </div>
+            <div className="mt-6">
+              <h3 className="text-xl font-semibold mb-3">Spesialisasi</h3>
+              <div className="flex flex-wrap gap-2">
+                {therapist.specialization.split(", ").map((spec, index) => (
+                  <Badge
+                    key={index}
+                    variant="secondary"
+                    className="bg-white text-gray-800 text-sm py-1 px-3"
+                  >
+                    {spec}
+                  </Badge>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="mt-4">
-        <h3 className="font-semibold">Spesialisasi</h3>
-        <div className="bg-white rounded p-2 mt-1">
-          <p>
-            Pendekatan Terapi Kognitif (CBT), Terapi Perilaku Dialektik (DBT)
-          </p>
-        </div>
-      </div>
-      <div className="mt-4">
-        <h3 className="font-semibold">Pendekatan Terapi</h3>
-        <div className="bg-white rounded p-2 mt-1">
-          <p>
-            Saya menggunakan pendekatan holistik, dengan fokus pada kesehatan
-            mental dan emosional pasien. Teknik yang digunakan termasuk
-            meditasi, terapi bicara, dan metode mindfulness.
-          </p>
-        </div>
-      </div>
-      <div className="mt-4">
-        <h3 className="font-semibold">Pengalaman</h3>
-        <div className="bg-white rounded p-2 mt-1">
-          <p>
-            Saya memiliki pengalaman 10 tahun bekerja dengan pasien yang
-            memiliki masalah kecemasan, depresi, dan gangguan stres pasca-trauma
-            (PTSD). Saya juga bekerja dengan anak-anak dan remaja dalam konteks
-            terapi keluarga.
-          </p>
-        </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
