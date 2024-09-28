@@ -15,6 +15,7 @@ export default function FloatingBar() {
     { src: "/floatingBar/journal.svg", page: "/journal" },
     { src: "/floatingBar/mindfullness.svg", page: "/mindfullness" },
     { src: "/floatingBar/profile.svg", page: "/profile" },
+    { src: "/floatingBar/article.svg", page: "/library" },
     { src: "/floatingBar/medication.svg", page: "/medication" },
     { src: "/floatingBar/emergency.svg", page: "/emergency" },
   ];
@@ -48,8 +49,8 @@ export default function FloatingBar() {
       </div>
 
       <div
-        className={`block sm:hidden fixed top-20 left-4 z-50 bg-white text-white p-2 rounded-full cursor-pointer transition-all duration-300 ${
-          isDropdownOpen ? "rounded-b-none shadow-lg" : "shadow-lg"
+        className={`block sm:hidden fixed bottom-10 right-4 z-50 bg-white text-white p-2 rounded-full cursor-pointer transition-all duration-300 ${
+          isDropdownOpen ? "rounded-t-none shadow-lg" : "shadow-lg"
         } overflow-hidden`}
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
@@ -62,7 +63,7 @@ export default function FloatingBar() {
           />
         </div>
         {isDropdownOpen && (
-          <div className="block sm:hidden fixed top-32 left-4 bg-white shadow-md rounded-b-full py-2">
+          <div className="block sm:hidden fixed bottom-24 right-4 bg-white rounded-t-full py-2">
             {icons.map((icon, index) => (
               <div
                 key={index}
