@@ -54,7 +54,7 @@ export default function Navbar() {
     }, [pathName]); // Re-run this effect whenever the route changes
 
   return (
-    <nav className="fixed bg-transparent p-4 font-teachers w-screen ">
+    <nav className="fixed bg-transparent p-4 font-teachers w-screen z-[9999] ">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex lg:hidden">
           <Button variant="ghost" size="icon" aria-label="Menu" onClick={toggleMenu}>
@@ -92,7 +92,7 @@ export default function Navbar() {
           {isLoggedIn ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center space-x-2">
+                <Button variant="ghost" className="flex items-center space-x-2 z-0">
                   <Image
                     src="/profile.png"
                     alt="Profile"

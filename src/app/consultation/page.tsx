@@ -98,7 +98,7 @@ export default function ConsultationPage() {
   };
 
   return (
-    <div className="bg-[#FFF6EF] min-h-screen px-12 py-6">
+    <div className="bg-[#FFF6EF] min-h-screen px-12 py-6 pt-28">
       <h1 className="text-black text-2xl mb-6">Hello! We&apos;re here!</h1>
 
       <div className="flex flex-col lg:flex-row gap-10">
