@@ -34,3 +34,49 @@ export async function createAppointment(appointmentData: {
     console.error("Error:", error);
   }
 }
+export async function fetchAppointmentHistory(
+  status?: string
+): Promise<AppointmentHistory[]> {
+  try {
+    // Build the query parameter based on status
+    const query = status ? `?status=${status}` : "";
+
+    // Fix the URL to match your backend route
+    const response = await fetch(
+      `http://localhost:8080/api/appointment/appointment-history${query}`,
+      {
+        method: "GET",
+        credentials: "include", // Make sure auth cookies are sent
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch appointment history: ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching appointment history:", error);
+    return [];
+  }
+}
+
+export interface AppointmentHistory {
+  appointment_id: string;
+  therapist: {
+    name: string;
+    image_url: string;
+    location: string;
+  };
+  price: number;
+  appointment_date: string;
+  type: string;
+  status: string;
+  payment_status: string;
+}

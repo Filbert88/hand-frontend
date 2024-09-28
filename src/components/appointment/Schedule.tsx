@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/select";
 import { getTherapistSchedule } from "../../app/api/therapist";
 import { createAppointment } from "../../app/api/appointment";
+import { DatePicker } from "../ui/datePicker";
+import { format } from "date-fns"; // To format the date
 
 interface ScheduleProps {
   therapistId: string;
@@ -27,8 +29,8 @@ export const Schedule: React.FC<ScheduleProps> = ({
     );
 
   // Set default date to today's date
-  const [selectedDate, setSelectedDate] = useState<string>(
-    new Date().toISOString().split("T")[0]
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    new Date()
   );
 
   const [availableSlots, setAvailableSlots] = useState<string[]>([]);
@@ -44,9 +46,12 @@ export const Schedule: React.FC<ScheduleProps> = ({
 
   const fetchSchedule = async () => {
     try {
+      const formattedDate = selectedDate
+        ? format(selectedDate, "yyyy-MM-dd")
+        : "";
       const schedule = await getTherapistSchedule(
         therapistId,
-        selectedDate,
+        formattedDate,
         selectedConsultationType
       );
       const filteredSlots = filterSlotsForToday(schedule?.schedules || []);
@@ -58,8 +63,12 @@ export const Schedule: React.FC<ScheduleProps> = ({
 
   // Filter available time slots if the selected date is today
   const filterSlotsForToday = (slots: string[]) => {
-    const today = new Date().toISOString().split("T")[0];
-    if (selectedDate !== today) {
+    const today = format(new Date(), "yyyy-MM-dd");
+    const selectedDateFormatted = selectedDate
+      ? format(selectedDate, "yyyy-MM-dd")
+      : "";
+
+    if (selectedDateFormatted !== today) {
       return slots;
     }
 
@@ -77,15 +86,17 @@ export const Schedule: React.FC<ScheduleProps> = ({
   };
 
   const handleAppointment = async () => {
-    if (!selectedSlot) {
-      console.log("Please select a time slot.");
+    if (!selectedSlot || !selectedDate) {
+      console.log("Please select a time slot and date.");
       return;
     }
 
     try {
       const appointmentData = {
         therapistId: therapistId,
-        date: new Date(`${selectedDate}T${selectedSlot}:00`), // Create DateTime object from date and time slot
+        date: new Date(
+          `${format(selectedDate, "yyyy-MM-dd")}T${selectedSlot}:00`
+        ), // Create DateTime object from date and time slot
         consultationType: selectedConsultationType,
       };
 
@@ -96,10 +107,6 @@ export const Schedule: React.FC<ScheduleProps> = ({
     } catch (error) {
       console.error("Error creating appointment:", error);
     }
-  };
-
-  const handleChat = () => {
-    console.log("Chat initiated with therapist");
   };
 
   return (
@@ -132,15 +139,9 @@ export const Schedule: React.FC<ScheduleProps> = ({
         </div>
 
         {/* Date Picker Component */}
-        <div className="bg-white rounded p-2">
-          <p className="font-semibold">Pilih Tanggal:</p>
-          <input
-            type="date"
-            className="text-gray-500 w-full p-2 bg-white border rounded"
-            value={selectedDate}
-            min={new Date().toISOString().split("T")[0]} // Disable past dates
-            onChange={(e) => setSelectedDate(e.target.value)} // ISO date format from input type="date"
-          />
+        <p className="font-semibold">Pilih Tanggal:</p>
+        <div className="bg-white flex flex-col rounded  w-full">
+          <DatePicker onDateChange={setSelectedDate} />{" "}
         </div>
 
         {/* Available Time Slots */}
@@ -157,7 +158,9 @@ export const Schedule: React.FC<ScheduleProps> = ({
               </Button>
             ))
           ) : (
-            <p className="text-gray-500">Tidak ada jadwal yang tersedia.</p>
+            <p className="text-gray-500 mb-5">
+              Tidak ada jadwal yang tersedia.
+            </p>
           )}
         </div>
 
@@ -165,9 +168,6 @@ export const Schedule: React.FC<ScheduleProps> = ({
         <div className="flex gap-2 mt-4">
           <Button className="flex-1" onClick={handleAppointment}>
             Buat Janji
-          </Button>
-          <Button variant="outline" className="flex-1" onClick={handleChat}>
-            Chat
           </Button>
         </div>
       </div>
