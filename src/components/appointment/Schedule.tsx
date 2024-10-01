@@ -42,6 +42,7 @@ export const Schedule: React.FC<ScheduleProps> = ({
     if (therapistId && selectedDate) {
       fetchSchedule();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [therapistId, selectedDate, selectedConsultationType]);
 
   const fetchSchedule = async () => {
