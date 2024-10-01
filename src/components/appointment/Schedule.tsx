@@ -103,9 +103,15 @@ export const Schedule: React.FC<ScheduleProps> = ({
       const response = await createAppointment(appointmentData);
       if (response) {
         console.log("Appointment created successfully", response);
+        if (response.redirect_url) {
+          window.location.href = response.redirect_url;
+        } else {
+          alert("Appointment created successfully.");
+        }
       }
     } catch (error) {
       console.error("Error creating appointment:", error);
+      alert("Failed to create appointment. Please try again.");
     }
   };
 
