@@ -45,31 +45,18 @@ const TherapistPage: React.FC<TherapistPageProps> = ({ params }) => {
   }
 
   return (
-    <div className="min-h-screen pt-20 px-10 bg-[#FFE9D0] p-4">
-      <main className="flex gap-4">
-        <aside className="w-64 space-y-2">
-          <div className="bg-gray-200 text-gray-700 p-4 rounded-lg">
-            Pick Your Therapist
-          </div>
-          <div className="bg-orange-500 text-white p-4 rounded-lg">
-            Details & Appointment
-          </div>
-          <div className="bg-gray-200 text-gray-700 p-4 rounded-lg">
-            Chat the Therapist
-          </div>
-        </aside>
-        <div className="flex-1 flex flex-col md:flex-row gap-4">
-          <div className="w-full md:w-1/2">
-            <TherapistDetails therapist={therapistDetails} />
-          </div>
-          <div className="w-full md:w-1/2">
-            <Schedule
-              consultationType={therapistDetails.consultation_type}
-              therapistId={therapistId}
-            />
-          </div>
+    <div className="min-h-screen  px-10 bg-[#FFE9D0] ">
+      <div className="flex-1 flex flex-col md:flex-row gap-4">
+        <div className="w-full md:w-1/2">
+          <TherapistDetails therapist={therapistDetails} />
         </div>
-      </main>
+        <div className="w-full md:w-1/2">
+          <Schedule
+            consultationType={therapistDetails.consultation_type}
+            therapistId={therapistId}
+          />
+        </div>
+      </div>
     </div>
   );
 };
