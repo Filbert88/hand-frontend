@@ -94,7 +94,7 @@ export default function AddPage() {
         payload = helpForm;
         break;
       case "Articles":
-        apiUrl = "/api/articles";
+        apiUrl = "/api/media/create";
         payload = articlesForm;
         break;
       default:
@@ -156,7 +156,7 @@ export default function AddPage() {
                     setTherapistForm({ ...therapistForm, name: e.target.value })
                   }
                   placeholder="Enter therapist's name"
-                  className="w-full p-2 border rounded-lg focus:outline-non"
+                  className="w-full p-2 border rounded-lg focus:outline-none"
                 />
               </div>
               <div>
@@ -171,7 +171,7 @@ export default function AddPage() {
                     })
                   }
                   placeholder="Enter specialization"
-                  className="w-full p-2 border rounded-lg focus:outline-non"
+                  className="w-full p-2 border rounded-lg focus:outline-none"
                 />
               </div>
               <div>
@@ -183,7 +183,7 @@ export default function AddPage() {
                     setTherapistForm({ ...therapistForm, bio: e.target.value })
                   }
                   placeholder="Enter therapist's bio"
-                  className="w-full p-2 border rounded-lg focus:outline-non"
+                  className="w-full p-2 border rounded-lg focus:outline-none"
                 />
               </div>
             </>
@@ -202,7 +202,7 @@ export default function AddPage() {
                     })
                   }
                   placeholder="Enter medication name"
-                  className="w-full p-2 border rounded-lg focus:outline-non"
+                  className="w-full p-2 border rounded-lg focus:outline-none"
                 />
               </div>
               <div>
@@ -217,7 +217,7 @@ export default function AddPage() {
                     })
                   }
                   placeholder="Enter dosage"
-                  className="w-full p-2 border rounded-lg focus:outline-non"
+                  className="w-full p-2 border rounded-lg focus:outline-none"
                 />
               </div>
               <div>
@@ -232,7 +232,7 @@ export default function AddPage() {
                     })
                   }
                   placeholder="Enter potential side effects"
-                  className="w-full p-2 border rounded-lg focus:outline-non"
+                  className="w-full p-2 border rounded-lg focus:outline-none"
                 />
               </div>
             </>
@@ -248,7 +248,7 @@ export default function AddPage() {
                     setHelpForm({ ...helpForm, topic: e.target.value })
                   }
                   placeholder="Enter help topic"
-                  className="w-full p-2 border rounded-lg focus:outline-non"
+                  className="w-full p-2 border rounded-lg focus:outline-none"
                 />
               </div>
               <div>
@@ -260,7 +260,7 @@ export default function AddPage() {
                     setHelpForm({ ...helpForm, category: e.target.value })
                   }
                   placeholder="Enter category"
-                  className="w-full p-2 border rounded-lg focus:outline-non"
+                  className="w-full p-2 border rounded-lg focus:outline-none"
                 />
               </div>
               <div>
@@ -272,7 +272,7 @@ export default function AddPage() {
                     setHelpForm({ ...helpForm, content: e.target.value })
                   }
                   placeholder="Enter help content"
-                  className="w-full p-2 border rounded-lg focus:outline-non"
+                  className="w-full p-2 border rounded-lg focus:outline-none"
                 />
               </div>
             </>
@@ -291,7 +291,7 @@ export default function AddPage() {
                     })
                   }
                   placeholder="Enter title"
-                  className="w-full p-2 border rounded-lg focus:outline-non"
+                  className="w-full p-2 border rounded-lg focus:outline-none"
                 />
               </div>
               <div>
@@ -306,7 +306,7 @@ export default function AddPage() {
                     })
                   }
                   placeholder="Article or Video"
-                  className="w-full p-2 border rounded-lg focus:outline-non"
+                  className="w-full p-2 border rounded-lg focus:outline-none"
                 />
               </div>
               <div>
@@ -321,7 +321,7 @@ export default function AddPage() {
                     })
                   }
                   placeholder="Enter content or video URL"
-                  className="w-full p-2 border rounded-lg focus:outline-none"
+                  className="w-full p-2 border rounded-lg focus:outline-nonee"
                 />
               </div>
             </>

@@ -115,7 +115,7 @@ export default function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Link href="/login">
+            <Link href="/auth/login">
               <Button variant="ghost" className="flex items-center space-x-2">
                 <Image
                   src="/profile.png"
