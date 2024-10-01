@@ -54,7 +54,7 @@ export default function TransactionHistory() {
     switch (status) {
       case "success":
         return "bg-green-100 text-green-800";
-      case "failed":
+      case "failure":
         return "bg-red-100 text-red-800";
       case "pending":
         return "bg-yellow-100 text-yellow-800";
@@ -67,7 +67,7 @@ export default function TransactionHistory() {
     switch (status) {
       case "success":
         return <CheckCircleIcon className="w-5 h-5 mr-1" />;
-      case "failed":
+      case "failure":
         return <XCircleIcon className="w-5 h-5 mr-1" />;
       case "pending":
         return <AlertCircleIcon className="w-5 h-5 mr-1" />;
