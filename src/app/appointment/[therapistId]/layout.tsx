@@ -1,20 +1,14 @@
 "use client";
-import React from "react";
-import { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import Link from "next/link";
 import { UserIcon, CalendarIcon, MessageCircleIcon } from "lucide-react";
 
-interface AppointmentLayoutProps {
-  children: React.ReactNode;
-  currentStep: string;
+interface LayoutProps {
+  children: ReactNode;
 }
 
-export default function AppointmentLayout({
-  children,
-  currentStep,
-}: AppointmentLayoutProps) {
+export default function AppointmentLayout({ children }: LayoutProps) {
   const [isOpen, setIsOpen] = useState(false);
-
   const menuItems = [
     {
       id: "pick",
@@ -37,7 +31,7 @@ export default function AppointmentLayout({
   ];
 
   return (
-    <div className="min-h-screen  pt-24 px-4 sm:px-6 lg:px-4 bg-[#FFE9D0]">
+    <div className="min-h-screen pt-24 px-4 sm:px-6 lg:px-4 bg-[#FFE9D0]">
       <div className="max-w-full mx-auto">
         <div className="lg:flex lg:gap-8">
           <aside className="lg:w-64">
@@ -69,11 +63,7 @@ export default function AppointmentLayout({
                 <Link
                   key={item.id}
                   href={item.href}
-                  className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-150 ease-in-out ${
-                    currentStep === item.id
-                      ? "bg-orange-500 text-white"
-                      : "bg-white text-gray-700 hover:bg-gray-50"
-                  }`}
+                  className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-150 ease-in-out bg-white text-gray-700 hover:bg-gray-50`}
                 >
                   {React.createElement(item.icon, {
                     className: "w-5 h-5 mr-3",
