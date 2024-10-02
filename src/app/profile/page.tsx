@@ -206,7 +206,7 @@ export default function UserProfile() {
                   </div>
                   {!userData?.is_mobile_verified && (
                     <Link
-                      href="/verify"
+                      href="auth/verify-otp"
                       className="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-full hover:bg-blue-600 transition-colors"
                     >
                       Verify Now
