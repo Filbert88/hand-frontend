@@ -6,7 +6,7 @@ import { UserIcon, CalendarIcon, MessageCircleIcon } from "lucide-react";
 
 interface AppointmentLayoutProps {
   children: React.ReactNode;
-  currentStep: "pick" | "details" | "chat";
+  currentStep: string;
 }
 
 export default function AppointmentLayout({
