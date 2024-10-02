@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Send, ArrowLeft, Paperclip, Smile, Settings, X } from 'lucide-react'
+import { Send, ArrowLeft, Settings, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { createWebSocket } from "../../util/socket";
-import Image from 'next/image'
+
 import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
 import { fetchChatMessages } from '@/app/api/service';
