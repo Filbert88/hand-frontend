@@ -14,16 +14,16 @@ import Image from "next/image"; // Import Next.js Image component
 import { getCheckIn } from "../api/service"; // Fetch function to get check-in data
 
 const emotions = [
-  { emoji: "/checkIn/emoji1 (10).png", id: 10 },
-  { emoji: "/checkIn/emoji1 (1).png", id: 1 },
-  { emoji: "/checkIn/emoji1 (2).png", id: 2 },
-  { emoji: "/checkIn/emoji1 (3).png", id: 3 },
-  { emoji: "/checkIn/emoji1 (4).png", id: 4 },
-  { emoji: "/checkIn/emoji1 (5).png", id: 5 },
-  { emoji: "/checkIn/emoji1 (6).png", id: 6 },
-  { emoji: "/checkIn/emoji1 (7).png", id: 7 },
-  { emoji: "/checkIn/emoji1 (8).png", id: 8 },
-  { emoji: "/checkIn/emoji1 (9).png", id: 9 },
+  { emoji: "/checkIn/emoji1 (9).png", id: 10 },
+  { emoji: "/checkIn/emoji1 (10).png", id: 1 },
+  { emoji: "/checkIn/emoji1 (1).png", id: 2 },
+  { emoji: "/checkIn/emoji1 (2).png", id: 3 },
+  { emoji: "/checkIn/emoji1 (3).png", id: 4 },
+  { emoji: "/checkIn/emoji1 (4).png", id: 5 },
+  { emoji: "/checkIn/emoji1 (5).png", id: 6 },
+  { emoji: "/checkIn/emoji1 (6).png", id: 7 },
+  { emoji: "/checkIn/emoji1 (7).png", id: 8 },
+  { emoji: "/checkIn/emoji1 (8).png", id: 9 },
 ];
 
 export default function MoodCalendar() {
