@@ -6,7 +6,10 @@ import { DatePicker } from "@/components/ui/datePicker";
 import { useRouter } from "next/navigation";
 import { fetchTherapists } from "../api/consultation";
 
-function debounce<T extends (...args: Parameters<T>) => void>(func: T, wait: number) {
+function debounce<T extends (...args: Parameters<T>) => void>(
+  func: T,
+  wait: number
+) {
   let timeout: ReturnType<typeof setTimeout>;
   return (...args: Parameters<T>) => {
     clearTimeout(timeout);
@@ -24,7 +27,6 @@ interface User {
   role: string; // Role of the user, e.g., "therapist", "admin", etc.
 }
 
-
 interface Therapist {
   ID: string;
   AppointmentRate: number;
@@ -34,10 +36,8 @@ interface Therapist {
   Specialization: string;
   UpdatedAt: string;
   UserID: string;
-  User: User
+  User: User;
 }
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ConsultationPage() {
   const router = useRouter();
@@ -63,7 +63,19 @@ export default function ConsultationPage() {
   };
 
   useEffect(() => {
-    fetchTherapists();
+    const loadTherapists = async () => {
+      setLoading(true);
+      const dateStr = formatDate(selectedDate);
+      const { therapists, errorMessage } = await fetchTherapists(
+        dateStr,
+        selectedFilter || "",
+        location
+      );
+      setTherapists(therapists);
+      setErrorMessage(errorMessage);
+      setLoading(false);
+    };
+    loadTherapists();
   }, []);
 
   useEffect(() => {

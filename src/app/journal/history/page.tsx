@@ -11,7 +11,7 @@ interface JournalEntry {
   user_id: string;
   content: string;
 }
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export default function JournalHistory() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]);
