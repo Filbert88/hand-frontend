@@ -26,6 +26,7 @@
     "react": "^18",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18",
+    "react-spinners": "^0.14.1",
     "socket.io-client": "^4.8.0",
     "socket.io-msgpack-parser": "^3.0.2",
     "sonner": "^1.5.0",

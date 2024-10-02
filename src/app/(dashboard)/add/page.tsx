@@ -1,8 +1,9 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState, FormEvent, useEffect } from "react";
+import { useState, FormEvent, useEffect, Suspense } from "react";
 import { User, Pill, HelpCircle, BookOpen, ArrowLeft } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
 // Define types for form inputs
 type TherapistForm = {
   name: string;
@@ -127,225 +128,227 @@ export default function AddPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#4A4A4A] text-white pt-24 px-10 sm:px-20">
-      <header className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold font-gloock">Hello, Admin!</h1>
-      </header>
+    <Suspense fallback={<div>Loading ..</div>}>
+      <div className="min-h-screen bg-[#4A4A4A] text-white pt-24 px-10 sm:px-20">
+        <header className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold font-gloock">Hello, Admin!</h1>
+        </header>
 
-      <div
-        className={`${getCategoryColor(
-          initialCategory
-        )} text-black p-4 rounded-lg`}
-      >
-        <div className="flex flex-row items-center justify-between mb-4">
-          <button
-            className="text-black flex items-center"
-            onClick={() => router.push("/dashboard")}
-          >
-            <ArrowLeft className="w-6 h-6 mr-2" />
-            Back
-          </button>
-          <div className="text-2xl flex items-center">
-            {getCategoryIcon(initialCategory)}
-            <span className="ml-2">Add {initialCategory}</span>
+        <div
+          className={`${getCategoryColor(
+            initialCategory
+          )} text-black p-4 rounded-lg`}
+        >
+          <div className="flex flex-row items-center justify-between mb-4">
+            <button
+              className="text-black flex items-center"
+              onClick={() => router.push("/dashboard")}
+            >
+              <ArrowLeft className="w-6 h-6 mr-2" />
+              Back
+            </button>
+            <div className="text-2xl flex items-center">
+              {getCategoryIcon(initialCategory)}
+              <span className="ml-2">Add {initialCategory}</span>
+            </div>
           </div>
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            {initialCategory === "Therapist" && (
+              <>
+                <div>
+                  <label htmlFor="name">Name</label>
+                  <input
+                    id="name"
+                    value={therapistForm.name}
+                    onChange={(e) =>
+                      setTherapistForm({
+                        ...therapistForm,
+                        name: e.target.value,
+                      })
+                    }
+                    placeholder="Enter therapist's name"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="specialization">Specialization</label>
+                  <input
+                    id="specialization"
+                    value={therapistForm.specialization}
+                    onChange={(e) =>
+                      setTherapistForm({
+                        ...therapistForm,
+                        specialization: e.target.value,
+                      })
+                    }
+                    placeholder="Enter specialization"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="bio">Bio</label>
+                  <textarea
+                    id="bio"
+                    value={therapistForm.bio}
+                    onChange={(e) =>
+                      setTherapistForm({
+                        ...therapistForm,
+                        bio: e.target.value,
+                      })
+                    }
+                    placeholder="Enter therapist's bio"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+              </>
+            )}
+            {initialCategory === "Medications" && (
+              <>
+                <div>
+                  <label htmlFor="medName">Medication Name</label>
+                  <input
+                    id="medName"
+                    value={medicationsForm.medName}
+                    onChange={(e) =>
+                      setMedicationsForm({
+                        ...medicationsForm,
+                        medName: e.target.value,
+                      })
+                    }
+                    placeholder="Enter medication name"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="dosage">Dosage</label>
+                  <input
+                    id="dosage"
+                    value={medicationsForm.dosage}
+                    onChange={(e) =>
+                      setMedicationsForm({
+                        ...medicationsForm,
+                        dosage: e.target.value,
+                      })
+                    }
+                    placeholder="Enter dosage"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="sideEffects">Side Effects</label>
+                  <textarea
+                    id="sideEffects"
+                    value={medicationsForm.sideEffects}
+                    onChange={(e) =>
+                      setMedicationsForm({
+                        ...medicationsForm,
+                        sideEffects: e.target.value,
+                      })
+                    }
+                    placeholder="Enter potential side effects"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+              </>
+            )}
+            {initialCategory === "Help" && (
+              <>
+                <div>
+                  <label htmlFor="topic">Help Topic</label>
+                  <input
+                    id="topic"
+                    value={helpForm.topic}
+                    onChange={(e) =>
+                      setHelpForm({ ...helpForm, topic: e.target.value })
+                    }
+                    placeholder="Enter help topic"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="category">Category</label>
+                  <input
+                    id="category"
+                    value={helpForm.category}
+                    onChange={(e) =>
+                      setHelpForm({ ...helpForm, category: e.target.value })
+                    }
+                    placeholder="Enter category"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="content">Help Content</label>
+                  <textarea
+                    id="content"
+                    value={helpForm.content}
+                    onChange={(e) =>
+                      setHelpForm({ ...helpForm, content: e.target.value })
+                    }
+                    placeholder="Enter help content"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+              </>
+            )}
+            {initialCategory === "Articles" && (
+              <>
+                <div>
+                  <label htmlFor="title">Title</label>
+                  <input
+                    id="title"
+                    value={articlesForm.title}
+                    onChange={(e) =>
+                      setArticlesForm({
+                        ...articlesForm,
+                        title: e.target.value,
+                      })
+                    }
+                    placeholder="Enter title"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="type">Type</label>
+                  <input
+                    id="type"
+                    value={articlesForm.type}
+                    onChange={(e) =>
+                      setArticlesForm({
+                        ...articlesForm,
+                        type: e.target.value,
+                      })
+                    }
+                    placeholder="Article or Video"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="content">Content/URL</label>
+                  <textarea
+                    id="content"
+                    value={articlesForm.content}
+                    onChange={(e) =>
+                      setArticlesForm({
+                        ...articlesForm,
+                        content: e.target.value,
+                      })
+                    }
+                    placeholder="Enter content or video URL"
+                    className="w-full p-2 border rounded-lg focus:outline-nonee"
+                  />
+                </div>
+              </>
+            )}
+            <button
+              type="submit"
+              className="w-full bg-[#4A4A4A] text-white p-2 hover:bg-[#3A3A3A] rounded-lg"
+            >
+              Add {initialCategory}
+            </button>
+          </form>
         </div>
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          {initialCategory === "Therapist" && (
-            <>
-              <div>
-                <label htmlFor="name">Name</label>
-                <input
-                  id="name"
-                  value={therapistForm.name}
-                  onChange={(e) =>
-                    setTherapistForm({
-                      ...therapistForm,
-                      name: e.target.value,
-                    })
-                  }
-                  placeholder="Enter therapist's name"
-                  className="w-full p-2 border rounded-lg focus:outline-none"
-                />
-              </div>
-              <div>
-                <label htmlFor="specialization">Specialization</label>
-                <input
-                  id="specialization"
-                  value={therapistForm.specialization}
-                  onChange={(e) =>
-                    setTherapistForm({
-                      ...therapistForm,
-                      specialization: e.target.value,
-                    })
-                  }
-                  placeholder="Enter specialization"
-                  className="w-full p-2 border rounded-lg focus:outline-none"
-                />
-              </div>
-              <div>
-                <label htmlFor="bio">Bio</label>
-                <textarea
-                  id="bio"
-                  value={therapistForm.bio}
-                  onChange={(e) =>
-                    setTherapistForm({
-                      ...therapistForm,
-                      bio: e.target.value,
-                    })
-                  }
-                  placeholder="Enter therapist's bio"
-                  className="w-full p-2 border rounded-lg focus:outline-none"
-                />
-              </div>
-            </>
-          )}
-          {initialCategory === "Medications" && (
-            <>
-              <div>
-                <label htmlFor="medName">Medication Name</label>
-                <input
-                  id="medName"
-                  value={medicationsForm.medName}
-                  onChange={(e) =>
-                    setMedicationsForm({
-                      ...medicationsForm,
-                      medName: e.target.value,
-                    })
-                  }
-                  placeholder="Enter medication name"
-                  className="w-full p-2 border rounded-lg focus:outline-none"
-                />
-              </div>
-              <div>
-                <label htmlFor="dosage">Dosage</label>
-                <input
-                  id="dosage"
-                  value={medicationsForm.dosage}
-                  onChange={(e) =>
-                    setMedicationsForm({
-                      ...medicationsForm,
-                      dosage: e.target.value,
-                    })
-                  }
-                  placeholder="Enter dosage"
-                  className="w-full p-2 border rounded-lg focus:outline-none"
-                />
-              </div>
-              <div>
-                <label htmlFor="sideEffects">Side Effects</label>
-                <textarea
-                  id="sideEffects"
-                  value={medicationsForm.sideEffects}
-                  onChange={(e) =>
-                    setMedicationsForm({
-                      ...medicationsForm,
-                      sideEffects: e.target.value,
-                    })
-                  }
-                  placeholder="Enter potential side effects"
-                  className="w-full p-2 border rounded-lg focus:outline-none"
-                />
-              </div>
-            </>
-          )}
-          {initialCategory === "Help" && (
-            <>
-              <div>
-                <label htmlFor="topic">Help Topic</label>
-                <input
-                  id="topic"
-                  value={helpForm.topic}
-                  onChange={(e) =>
-                    setHelpForm({ ...helpForm, topic: e.target.value })
-                  }
-                  placeholder="Enter help topic"
-                  className="w-full p-2 border rounded-lg focus:outline-none"
-                />
-              </div>
-              <div>
-                <label htmlFor="category">Category</label>
-                <input
-                  id="category"
-                  value={helpForm.category}
-                  onChange={(e) =>
-                    setHelpForm({ ...helpForm, category: e.target.value })
-                  }
-                  placeholder="Enter category"
-                  className="w-full p-2 border rounded-lg focus:outline-none"
-                />
-              </div>
-              <div>
-                <label htmlFor="content">Help Content</label>
-                <textarea
-                  id="content"
-                  value={helpForm.content}
-                  onChange={(e) =>
-                    setHelpForm({ ...helpForm, content: e.target.value })
-                  }
-                  placeholder="Enter help content"
-                  className="w-full p-2 border rounded-lg focus:outline-none"
-                />
-              </div>
-            </>
-          )}
-          {initialCategory === "Articles" && (
-            <>
-              <div>
-                <label htmlFor="title">Title</label>
-                <input
-                  id="title"
-                  value={articlesForm.title}
-                  onChange={(e) =>
-                    setArticlesForm({
-                      ...articlesForm,
-                      title: e.target.value,
-                    })
-                  }
-                  placeholder="Enter title"
-                  className="w-full p-2 border rounded-lg focus:outline-none"
-                />
-              </div>
-              <div>
-                <label htmlFor="type">Type</label>
-                <input
-                  id="type"
-                  value={articlesForm.type}
-                  onChange={(e) =>
-                    setArticlesForm({
-                      ...articlesForm,
-                      type: e.target.value,
-                    })
-                  }
-                  placeholder="Article or Video"
-                  className="w-full p-2 border rounded-lg focus:outline-none"
-                />
-              </div>
-              <div>
-                <label htmlFor="content">Content/URL</label>
-                <textarea
-                  id="content"
-                  value={articlesForm.content}
-                  onChange={(e) =>
-                    setArticlesForm({
-                      ...articlesForm,
-                      content: e.target.value,
-                    })
-                  }
-                  placeholder="Enter content or video URL"
-                  className="w-full p-2 border rounded-lg focus:outline-nonee"
-                />
-              </div>
-            </>
-          )}
-          <button
-            type="submit"
-            className="w-full bg-[#4A4A4A] text-white p-2 hover:bg-[#3A3A3A] rounded-lg"
-          >
-            Add {initialCategory}
-          </button>
-        </form>
       </div>
-    </div>
+    </Suspense>
   );
 }
