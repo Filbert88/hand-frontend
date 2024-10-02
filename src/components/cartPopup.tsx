@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { postMedicationTransaction } from "@/app/api/medicationService"; // Import the API call
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 
 export interface CartItem {
   id: string;
