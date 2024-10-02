@@ -2,9 +2,19 @@
 import React, { useEffect, useState } from "react";
 import CarouselComponent from "./Carousel";
 
+interface MediaItem {
+  ID: string;
+  Type: "article" | "video";
+  Title: string;
+  Content: string;
+  CreatedAt: string;
+  UpdatedAt: string;
+  image_url: string;
+}
+
 export default function Page() {
-  const [articles, setArticles] = useState([]);
-  const [videos, setVideos] = useState([]);
+  const [articles, setArticles] = useState<MediaItem[]>([]);
+  const [videos, setVideos] = useState<MediaItem[]>([]);
 
   useEffect(() => {
     async function fetchMedia() {
@@ -16,9 +26,13 @@ export default function Page() {
             "Content-Type": "application/json",
           },
         });
-        const data = await response.json();
-        const articlesData = data.filter((item: any) => item.Type === "article");
-        const videosData = data.filter((item: any) => item.Type === "video");
+        const data: MediaItem[] = await response.json();
+        const articlesData = data.filter(
+          (item: MediaItem) => item.Type === "article"
+        );
+        const videosData = data.filter(
+          (item: MediaItem) => item.Type === "video"
+        );
         setArticles(articlesData);
         setVideos(videosData);
       } catch (error) {
@@ -42,12 +56,16 @@ export default function Page() {
         />
       </div>
       <div className="mt-10">
-        <h2 className="text-3xl font-semibold mb-4 font-gloock text-center">Articles</h2>
+        <h2 className="text-3xl font-semibold mb-4 font-gloock text-center">
+          Articles
+        </h2>
         <CarouselComponent items={articles} />
       </div>
 
       <div className="mt-10 mb-12">
-        <h2 className="text-3xl font-semibold mb-4 font-gloock text-center">Videos</h2>
+        <h2 className="text-3xl font-semibold mb-4 font-gloock text-center">
+          Videos
+        </h2>
         <CarouselComponent items={videos} />
       </div>
     </div>

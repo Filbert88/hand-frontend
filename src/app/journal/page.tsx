@@ -8,8 +8,6 @@ export default function JournalPage() {
   const [journalEntry, setJournalEntry] = useState("");
 
   const handleSave = async () => {
-    const today = new Date().toISOString().split("T")[0];
-
     try {
       const response = await fetch("http://localhost:8080/api/journals", {
         method: "POST",
@@ -39,7 +37,7 @@ export default function JournalPage() {
         <div className="flex flex-col md:flex-row h-[calc(100vh-8rem)]">
           <div className="md:w-1/3 flex flex-col justify-between">
             <h2 className="text-5xl font-bold mb-8 font-gloock sm:text-left text-center">
-              So.., what's up?
+              So.., what&apos;s up?
             </h2>
             <div className="flex flex-col pb-10 sm:pb-28 justify-center">
               <Link

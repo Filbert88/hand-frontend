@@ -17,7 +17,7 @@ interface CartPopupProps {
 
 export default function CartPopup({ onClose, onRemove }: CartPopupProps) {
   
-    const storedCart = localStorage.getItem('userCart');
+    let storedCart = localStorage.getItem('userCart');
     let newCart: CartItem[] = [];
     if (storedCart) {
       newCart = JSON.parse(storedCart);

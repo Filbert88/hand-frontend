@@ -5,9 +5,15 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { DatePicker } from "@/components/ui/datePicker";
 
+interface JournalEntry {
+  id: string;
+  user_id: string;
+  content: string;
+}
+
 export default function JournalHistory() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-  const [journalEntries, setJournalEntries] = useState<any[]>([]); 
+  const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]); 
 
   const formatDate = (date: Date | null) => {
     if (!date) return "Invalid date";
@@ -73,7 +79,7 @@ export default function JournalHistory() {
   
   return (
     <div className="min-h-screen bg-[#FFFDF5] pt-20 sm:pt-28 flex px-10 sm:px-20">
-      <div className="mx-auto w-full flex flex-col md:flex-row">
+      <div className="mx-auto w-full flex flex-col md:flex-row gap-8">
         <div className="md:w-1/4 flex flex-col justify-between pb-10 sm:pb-24">
           <div>
             <h1 className="text-4xl font-bold mb-4 text-center sm:text-left">Your Journal</h1>
@@ -110,10 +116,9 @@ export default function JournalHistory() {
             <div className="absolute inset-0 bg-[linear-gradient(transparent_27px,#EEEEEE_1px)] bg-[size:100%_28px]" />
             <div className="relative z-10 leading-[28px] min-h-[calc(100vh-16rem)]">
               {journalEntries.length > 0 ? (
-                journalEntries.map((entry: any) => (
+                journalEntries.map((entry: JournalEntry) => (
                   <div key={entry.id} className="mb-4">
                     <p>{entry.content || "No content available"}</p> 
-                    <hr className="my-4" />
                   </div>
                 ))
               ) : (

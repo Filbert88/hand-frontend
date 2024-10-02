@@ -54,7 +54,7 @@ export interface Medication {
     };
   
     const loadCartFromStorage = (): void => {
-      const storedCart = localStorage.getItem('userCart');
+      let storedCart = localStorage.getItem('userCart');
       if (storedCart) {
         setCart(JSON.parse(storedCart));
       }

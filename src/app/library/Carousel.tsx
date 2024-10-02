@@ -14,28 +14,7 @@ export default function CarouselComponent({
   items: { Title: string; Content: string; image_url: string }[];
 }) {
   const [api, setApi] = React.useState<CarouselApi>();
-  const [current, setCurrent] = React.useState(0);
-  const [count, setCount] = React.useState(0);
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
-
-  React.useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
-
-    const handleSelect = () => {
-      setCurrent(api.selectedScrollSnap() + 1);
-    };
-
-    api.on("select", handleSelect);
-
-    return () => {
-      api.off("select", handleSelect);
-    };
-  }, [api]);
 
   const goPrev = () => {
     if (api) {
@@ -49,7 +28,6 @@ export default function CarouselComponent({
     }
   };
 
-  // Function to handle card click
   const handleCardClick = (content: string) => {
     const isYouTubeVideo =
       content.includes("youtube.com") || content.includes("youtu.be");
