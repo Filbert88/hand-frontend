@@ -8,12 +8,6 @@ import {
 } from "@/app/api/medicationService"; // Import the service
 import { getCookie } from "cookies-next";
 
-interface PurchaseItem {
-  name: string;
-  quantity: number;
-  price: number;
-}
-
 const PurchaseHistory: React.FC = () => {
   const [transactions, setTransactions] = useState<MedicationHistory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
