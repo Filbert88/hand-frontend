@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createWebSocket } from "../util/socket";
 
-const SOCKET_SERVER_URL = "ws://localhost:8000/ws"; // Replace with your WebSocket server URL
-
+// Replace with your WebSocket server URL
+const SOCKET_SERVER_URL = "ws://localhost:8000/ws"; 
 const Match = () => {
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [status, setStatus] = useState<string>(""); // Store status
