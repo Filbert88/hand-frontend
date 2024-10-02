@@ -41,7 +41,7 @@ const TherapistCard: React.FC<TherapistProps> = ({
           className="bg-white text-black font-bold py-2 px-4 rounded text-sm w-full hover:bg-gray-100"
           onClick={onAppointment}
         >
-          More and Appointment
+          Make an Appointment
         </button>
       </div>
     </div>

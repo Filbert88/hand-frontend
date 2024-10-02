@@ -17,7 +17,7 @@ const features = [
     icon: "/floatingBar/mindfullness.svg",
     link: "/mindfulness",
   },
-  { name: "Your Space", icon: "/floatingBar/profile.svg", link: "/your-space" },
+  { name: "Your Space", icon: "/floatingBar/profile.svg", link: "/profile" },
   { name: "Library", icon: "/floatingBar/article.svg", link: "/library" },
   {
     name: "Medication",
