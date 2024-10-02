@@ -232,7 +232,7 @@ export default function UserProfile() {
             icon="/profile/checkin.svg"
             text="Your Mood"
             bgColor="bg-[#C8DDFC]"
-            href="/mood"
+            href="/your-mood"
           />
           <MenuItem
             icon="/floatingBar/journal.svg"

@@ -118,7 +118,7 @@ const RegisterForm: React.FC = () => {
         setPhoneNumber("");
 
         setTimeout(() => {
-          router.push("auth/login");
+          router.push("/auth/login");
         }, 500);
       } else {
         const errorData = await response.json();

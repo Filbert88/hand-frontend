@@ -104,3 +104,33 @@ export async function fetchChatMessages(
     return undefined;
   }
 }
+
+export async function getCheckIn(): Promise<CheckIn> {
+  const token = await getToken(); // Assume getToken is a function that retrieves your token
+  try {
+    const response = await fetch(`${API_URL}/checkins/all`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "include", // If you need credentials
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error fetching check-in: ${response.statusText}`);
+    }
+
+    const data: CheckIn = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching check-in", error);
+    throw error;
+  }
+}
+
+interface CheckIn {
+  ID:          string,
+  MoodScore:   number,
+  CheckInDate: string,
+}
