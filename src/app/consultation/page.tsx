@@ -5,12 +5,35 @@ import TherapistCard from "@/components/TherapistCard";
 import { DatePicker } from "@/components/ui/datePicker";
 import { useRouter } from "next/navigation";
 
-function debounce(func: (...args: any) => void, wait: number) {
-  let timeout: NodeJS.Timeout;
-  return (...args: any) => {
+function debounce<T extends (...args: Parameters<T>) => void>(func: T, wait: number) {
+  let timeout: ReturnType<typeof setTimeout>;
+  return (...args: Parameters<T>) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), wait);
   };
+}
+
+interface User {
+  email: string;
+  image_url: string; // URL string for the user's image
+  is_mobile_verified: boolean;
+  name: string;
+  password: string; // Encrypted password or empty if not used
+  phone_number: string;
+  role: string; // Role of the user, e.g., "therapist", "admin", etc.
+}
+
+
+interface Therapist {
+  ID: string;
+  AppointmentRate: number;
+  Consultation: string; // Assuming it's a string like "hybrid"
+  CreatedAt: string; // ISO date string
+  Location: string;
+  Specialization: string;
+  UpdatedAt: string;
+  UserID: string;
+  User: User
 }
 
 export default function ConsultationPage() {
@@ -21,7 +44,7 @@ export default function ConsultationPage() {
   >(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [location, setLocation] = useState<string>("");
-  const [therapists, setTherapists] = useState([]);
+  const [therapists, setTherapists] = useState<Therapist[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -38,6 +61,7 @@ export default function ConsultationPage() {
       );
       if (response.ok) {
         const data = await response.json();
+        console.log(data)
         setTherapists(data);
 
         if (data.length === 0) {
@@ -173,7 +197,7 @@ export default function ConsultationPage() {
                 <div>{errorMessage}</div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {therapists.map((therapist: any, index: number) => (
+                  {therapists.map((therapist: Therapist, index: number) => (
                     <TherapistCard
                       key={index}
                       name={therapist.User.name}

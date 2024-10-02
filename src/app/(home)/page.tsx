@@ -50,11 +50,11 @@ export default function Home() {
 
       <div className="relative z-20">
         <div className="bg-white rounded-full py-2 px-4 inline-block mb-4 mt-6 sm:mt-10 z-20">
-          <p className="text-lg">Hi, I'm Handy! Wanna talk?</p>
+          <p className="text-lg">Hi, I&apos;m Handy! Wanna talk?</p>
         </div>
 
         <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-4 max-w-xl mt-6 sm:mt-10 z-20">
-          "It's never wrong to ask"
+        `&quot;It&apos;s never wrong to ask`&quot;
         </h1>
       </div>
 

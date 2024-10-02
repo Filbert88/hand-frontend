@@ -33,7 +33,7 @@ export default function AddPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get("category") || "Therapist";
-  const [category, setCategory] = useState(initialCategory);
+ 
 
   // Form states based on category
   const [therapistForm, setTherapistForm] = useState<TherapistForm>({
@@ -80,7 +80,7 @@ export default function AddPage() {
     let apiUrl = "";
     let payload = {};
 
-    switch (category) {
+    switch (initialCategory) {
       case "Therapist":
         apiUrl = "/api/therapists";
         payload = therapistForm;
@@ -129,7 +129,7 @@ export default function AddPage() {
       </header>
 
       <div
-        className={`${getCategoryColor(category)} text-black p-4 rounded-lg`}
+        className={`${getCategoryColor(initialCategory)} text-black p-4 rounded-lg`}
       >
         <div className="flex flex-row items-center justify-between mb-4">
           <button
@@ -140,12 +140,12 @@ export default function AddPage() {
             Back
           </button>
           <div className="text-2xl flex items-center">
-            {getCategoryIcon(category)}
-            <span className="ml-2">Add {category}</span>
+            {getCategoryIcon(initialCategory)}
+            <span className="ml-2">Add {initialCategory}</span>
           </div>
         </div>
         <form className="space-y-4" onSubmit={handleSubmit}>
-          {category === "Therapist" && (
+          {initialCategory === "Therapist" && (
             <>
               <div>
                 <label htmlFor="name">Name</label>
@@ -188,7 +188,7 @@ export default function AddPage() {
               </div>
             </>
           )}
-          {category === "Medications" && (
+          {initialCategory === "Medications" && (
             <>
               <div>
                 <label htmlFor="medName">Medication Name</label>
@@ -237,7 +237,7 @@ export default function AddPage() {
               </div>
             </>
           )}
-          {category === "Help" && (
+          {initialCategory === "Help" && (
             <>
               <div>
                 <label htmlFor="topic">Help Topic</label>
@@ -277,7 +277,7 @@ export default function AddPage() {
               </div>
             </>
           )}
-          {category === "Articles" && (
+          {initialCategory === "Articles" && (
             <>
               <div>
                 <label htmlFor="title">Title</label>
@@ -330,7 +330,7 @@ export default function AddPage() {
             type="submit"
             className="w-full bg-[#4A4A4A] text-white p-2 hover:bg-[#3A3A3A] rounded-lg"
           >
-            Add {category}
+            Add {initialCategory}
           </button>
         </form>
       </div>
