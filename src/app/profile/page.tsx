@@ -145,7 +145,10 @@ export default function UserProfile() {
             <div className="md:w-1/3 bg-[#91CAF8] p-8 flex flex-col items-center justify-center relative">
               <div className="relative">
                 <Image
-                  src={userData?.image_url || "/default-profile.png"}
+                  src={
+                    userData?.image_url ||
+                    "https://pub-736ef3be77f045e8ba550ae958fe7e1b.r2.dev/uploads/1727887801-default_image.jpg"
+                  }
                   alt="Profile picture"
                   width={200}
                   height={200}
