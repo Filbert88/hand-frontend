@@ -10,7 +10,7 @@ interface JournalEntry {
   user_id: string;
   content: string;
 }
-
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export default function JournalHistory() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]); 
@@ -28,7 +28,7 @@ export default function JournalHistory() {
   const fetchJournalEntries = async (date: string) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/journals?date=${date}`,
+        `${API_URL}/journals?date=${date}`,
         {
           method: "GET",
           credentials: "include",

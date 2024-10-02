@@ -1,5 +1,6 @@
 import { ChatMessage } from "../find/[roomId]/page";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export interface CheckInData {
   mood_score: number;
   feelings: string;
@@ -8,7 +9,7 @@ export interface CheckInData {
 export async function getTodayCheckIn() {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/checkins/ischeckin`,
+      `${API_URL}/checkins/ischeckin`,
       {
         method: "GET",
         credentials: "include",
@@ -31,7 +32,7 @@ export async function getTodayCheckIn() {
 
 export async function createCheckIn(checkInData: CheckInData) {
   try {
-    const response = await fetch(`http://localhost:8080/api/checkins/create`, {
+    const response = await fetch(`${API_URL}/checkins/create`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -54,7 +55,7 @@ export async function createCheckIn(checkInData: CheckInData) {
 
 export async function updateCheckIn(checkInData: CheckInData) {
   try {
-    const response = await fetch(`http://localhost:8080/api/checkins`, {
+    const response = await fetch(`${API_URL}/checkins`, {
       method: "PUT",
       credentials: "include",
       headers: {
@@ -76,7 +77,7 @@ export async function updateCheckIn(checkInData: CheckInData) {
 
 export async function fetchChatMessages(roomId: string): Promise<ChatMessage[] | undefined> {
   try {
-    const response = await fetch(`http://localhost:8080/api/room/message/${roomId}`, {
+    const response = await fetch(`${API_URL}/room/message/${roomId}`, {
       method: "GET",
       credentials: "include", // Ensure cookies for session management are included with the request
       headers: {

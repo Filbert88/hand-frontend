@@ -25,7 +25,7 @@ interface ChatRoomProps {
   };
 }
 
-const SOCKET_SERVER_URL = "ws://localhost:8000/ws";
+const SOCKET_SERVER_URL = process.env.NEXT_PUBLIC_SOCKET_URL || ""
 
 
 const ChatPage :React.FC<ChatRoomProps> = ({ params }) => {

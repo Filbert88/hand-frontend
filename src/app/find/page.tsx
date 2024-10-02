@@ -25,7 +25,7 @@ const moods: Mood[] = [
   { icon: "/checkin/emoji1 (8).png", name: "Bored" , id:9},
   { icon: "/checkin/emoji1 (9).png", name: "Surprised" , id: 10},
 ]
-const SOCKET_SERVER_URL = "ws://localhost:8000/ws"; 
+const SOCKET_SERVER_URL = process.env.NEXT_PUBLIC_SOCKET_URL || ""
 export default function EnhancedAnonymousChat() {
   const [step, setStep] = useState<'select' | 'finding' | 'chatting'>('select')
   const [selectedMood, setSelectedMood] = useState<Mood | null>(null)

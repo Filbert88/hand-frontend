@@ -1,3 +1,5 @@
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export async function createAppointment(appointmentData: {
   therapistId: string;
   date: Date;
@@ -8,7 +10,7 @@ export async function createAppointment(appointmentData: {
     const formattedDate = appointmentData.date.toISOString();
 
     const response = await fetch(
-      "http://localhost:8080/api/appointment/create-appointment",
+        `${API_URL}/appointment/create-appointment`,
       {
         method: "POST",
         credentials: "include",
@@ -43,7 +45,7 @@ export async function fetchAppointmentHistory(
 
     // Fix the URL to match your backend route
     const response = await fetch(
-      `http://localhost:8080/api/appointment/appointment-history${query}`,
+      `${API_URL}/appointment/appointment-history${query}`,
       {
         method: "GET",
         credentials: "include", // Make sure auth cookies are sent
