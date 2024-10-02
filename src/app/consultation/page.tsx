@@ -66,17 +66,37 @@ export default function ConsultationPage() {
     const loadTherapists = async () => {
       setLoading(true);
       const dateStr = formatDate(selectedDate);
+
+      // Fetch all therapists initially, without applying filter on the server
       const { therapists, errorMessage } = await fetchTherapists(
         dateStr,
-        selectedFilter || "",
+        "",
         location
       );
       setTherapists(therapists);
       setErrorMessage(errorMessage);
       setLoading(false);
     };
+
     loadTherapists();
-  }, []);
+  }, [selectedDate, location]);
+
+  const getFilteredTherapists = () => {
+    return therapists.filter((therapist) => {
+      if (selectedFilter === "online") {
+        return (
+          therapist.Consultation === "online" ||
+          therapist.Consultation === "hybrid"
+        );
+      } else if (selectedFilter === "offline") {
+        return (
+          therapist.Consultation === "offline" ||
+          therapist.Consultation === "hybrid"
+        );
+      }
+      return true; // If no filter, return all therapists
+    });
+  };
 
   useEffect(() => {
     const dateStr = formatDate(selectedDate);
@@ -84,7 +104,11 @@ export default function ConsultationPage() {
   }, [selectedDate, selectedFilter, location]);
 
   const handleFilterClick = (filter: "online" | "offline") => {
-    setSelectedFilter(filter);
+    if (selectedFilter === filter) {
+      setSelectedFilter(null);
+    } else {
+      setSelectedFilter(filter);
+    }
   };
 
   const handleDateChange = (date: Date | undefined) => {
@@ -93,7 +117,7 @@ export default function ConsultationPage() {
 
   const handleLocationChange = useCallback(
     debounce((newLocation: string) => {
-      setLocation(newLocation);
+      setLocation(newLocation.trim());
     }, 1000),
     []
   );
@@ -183,16 +207,20 @@ export default function ConsultationPage() {
                 <div>{errorMessage}</div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {therapists.map((therapist: Therapist, index: number) => (
-                    <TherapistCard
-                      key={index}
-                      name={therapist.User.name}
-                      location={therapist.Location}
-                      image={therapist.User.image_url}
-                      onChat={handleChat}
-                      onAppointment={() => handleAppointment(therapist.UserID)} // Pass the therapistId to the function
-                    />
-                  ))}
+                  {getFilteredTherapists().map(
+                    (therapist: Therapist, index: number) => (
+                      <TherapistCard
+                        key={index}
+                        name={therapist.User.name}
+                        location={therapist.Location}
+                        image={therapist.User.image_url}
+                        onChat={handleChat}
+                        onAppointment={() =>
+                          handleAppointment(therapist.UserID)
+                        } // Pass the therapistId to the function
+                      />
+                    )
+                  )}
                 </div>
               )}
             </>
