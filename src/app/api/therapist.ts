@@ -1,7 +1,8 @@
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export async function getTherapistDetails(therapistId: string) {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/therapist/${therapistId}/details`,
+      `${API_URL}/therapist/${therapistId}/details`,
       {
         method: "GET",
         credentials: "include",
@@ -36,7 +37,7 @@ export async function getTherapistSchedule(
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/therapist/${therapistId}/schedule${queryParams}`,
+      `${API_URL}/therapist/${therapistId}/schedule${queryParams}`,
       {
         method: "GET",
         credentials: "include",

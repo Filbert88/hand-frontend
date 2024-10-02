@@ -36,6 +36,8 @@ interface Therapist {
   User: User
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export default function ConsultationPage() {
   const router = useRouter();
   const [selectedOption, setSelectedOption] = useState("");
@@ -57,7 +59,7 @@ export default function ConsultationPage() {
     setErrorMessage("");
     try {
       const response = await fetch(
-        `http://localhost:8080/api/therapists?consultation=${consultationType}&location=${location}&date=${dateStr}`
+        `${API_URL}/therapists?consultation=${consultationType}&location=${location}&date=${dateStr}`
       );
       if (response.ok) {
         const data = await response.json();

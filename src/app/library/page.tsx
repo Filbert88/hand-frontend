@@ -12,6 +12,8 @@ interface MediaItem {
   image_url: string;
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export default function Page() {
   const [articles, setArticles] = useState<MediaItem[]>([]);
   const [videos, setVideos] = useState<MediaItem[]>([]);
@@ -19,7 +21,7 @@ export default function Page() {
   useEffect(() => {
     async function fetchMedia() {
       try {
-        const response = await fetch(`http://localhost:8080/api/media`, {
+        const response = await fetch(`${API_URL}/media`, {
           method: "GET",
           credentials: "include",
           headers: {
