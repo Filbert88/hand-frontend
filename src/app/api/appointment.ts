@@ -1,29 +1,29 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+import { getToken } from "@/utils/function";
 
 export async function createAppointment(appointmentData: {
   therapistId: string;
   date: Date;
   consultationType: string;
 }) {
+  const token = await getToken();
   try {
     // Ensure date is in ISO format (RFC3339) to match backend format
     const formattedDate = appointmentData.date.toISOString();
 
-    const response = await fetch(
-        `${API_URL}/appointment/create-appointment`,
-      {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          therapist_id: appointmentData.therapistId,
-          date: formattedDate,
-          consultation_type: appointmentData.consultationType,
-        }),
-      }
-    );
+    const response = await fetch(`${API_URL}/appointment/create-appointment`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        therapist_id: appointmentData.therapistId,
+        date: formattedDate,
+        consultation_type: appointmentData.consultationType,
+      }),
+    });
 
     const data = await response.json();
     if (response.ok) {
@@ -39,6 +39,7 @@ export async function createAppointment(appointmentData: {
 export async function fetchAppointmentHistory(
   status?: string
 ): Promise<AppointmentHistory[]> {
+  const token = await getToken();
   try {
     // Build the query parameter based on status
     const query = status ? `?status=${status}` : "";
@@ -51,6 +52,7 @@ export async function fetchAppointmentHistory(
         credentials: "include", // Make sure auth cookies are sent
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       }
     );

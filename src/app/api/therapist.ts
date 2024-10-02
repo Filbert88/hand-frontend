@@ -1,5 +1,7 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+import { getToken } from "@/utils/function";
 export async function getTherapistDetails(therapistId: string) {
+  const token = await getToken();
   try {
     const response = await fetch(
       `${API_URL}/therapist/${therapistId}/details`,
@@ -8,6 +10,7 @@ export async function getTherapistDetails(therapistId: string) {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -27,6 +30,7 @@ export async function getTherapistSchedule(
   date: string | null = null,
   consultationType: string | null = null
 ) {
+  const token = await getToken();
   let queryParams = `?`;
   if (date) {
     queryParams += `date=${date}&`;
@@ -43,6 +47,7 @@ export async function getTherapistSchedule(
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       }
     );

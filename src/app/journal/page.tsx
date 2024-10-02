@@ -1,34 +1,16 @@
 "use client";
-
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { saveJournalEntry } from "../api/journal";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export default function JournalPage() {
   const [journalEntry, setJournalEntry] = useState("");
 
   const handleSave = async () => {
-    try {
-      const response = await fetch(`${API_URL}/journals`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          content: journalEntry,
-        }),
-      });
-
-      if (response.ok) {
-        console.log("Journal entry saved successfully");
-        setJournalEntry("");
-      } else {
-        console.error("Failed to save journal entry");
-      }
-    } catch (error) {
-      console.error("Error saving journal entry:", error);
+    const isSaved = await saveJournalEntry(journalEntry);
+    if (isSaved) {
+      setJournalEntry("");
     }
   };
 

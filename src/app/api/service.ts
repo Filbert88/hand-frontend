@@ -1,23 +1,24 @@
 import { ChatMessage } from "../find/[roomId]/page";
-
+import { getToken } from "@/utils/function";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export interface CheckInData {
   mood_score: number;
   feelings: string;
   notes: string;
 }
+
 export async function getTodayCheckIn() {
+  const token = await getToken();
+
   try {
-    const response = await fetch(
-      `${API_URL}/checkins/ischeckin`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`${API_URL}/checkins/ischeckin`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const data = await response.json();
     if (response.ok) {
       console.log("Today's CheckIn:", data);
@@ -31,13 +32,14 @@ export async function getTodayCheckIn() {
 }
 
 export async function createCheckIn(checkInData: CheckInData) {
+  const token = await getToken();
   try {
     const response = await fetch(`${API_URL}/checkins/create`, {
       method: "POST",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        // Assuming the token is stored in localStorage
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(checkInData),
     });
@@ -54,12 +56,14 @@ export async function createCheckIn(checkInData: CheckInData) {
 }
 
 export async function updateCheckIn(checkInData: CheckInData) {
+  const token = await getToken();
   try {
     const response = await fetch(`${API_URL}/checkins`, {
       method: "PUT",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(checkInData),
     });
@@ -75,13 +79,17 @@ export async function updateCheckIn(checkInData: CheckInData) {
   }
 }
 
-export async function fetchChatMessages(roomId: string): Promise<ChatMessage[] | undefined> {
+export async function fetchChatMessages(
+  roomId: string
+): Promise<ChatMessage[] | undefined> {
+  const token = await getToken();
   try {
     const response = await fetch(`${API_URL}/room/message/${roomId}`, {
       method: "GET",
       credentials: "include", // Ensure cookies for session management are included with the request
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     const data = await response.json();

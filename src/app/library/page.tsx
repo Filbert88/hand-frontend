@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import CarouselComponent from "./Carousel";
+import { fetchMedia } from "../api/media";
 
 interface MediaItem {
   ID: string;
@@ -12,37 +13,18 @@ interface MediaItem {
   image_url: string;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 export default function Page() {
   const [articles, setArticles] = useState<MediaItem[]>([]);
   const [videos, setVideos] = useState<MediaItem[]>([]);
 
   useEffect(() => {
-    async function fetchMedia() {
-      try {
-        const response = await fetch(`${API_URL}/media`, {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const data: MediaItem[] = await response.json();
-        const articlesData = data.filter(
-          (item: MediaItem) => item.Type === "article"
-        );
-        const videosData = data.filter(
-          (item: MediaItem) => item.Type === "video"
-        );
-        setArticles(articlesData);
-        setVideos(videosData);
-      } catch (error) {
-        console.error("Error fetching media:", error);
-      }
+    async function getMedia() {
+      const { articles, videos } = await fetchMedia();
+      setArticles(articles);
+      setVideos(videos);
     }
 
-    fetchMedia();
+    getMedia();
   }, []);
 
   return (

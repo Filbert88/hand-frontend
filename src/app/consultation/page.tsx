@@ -4,6 +4,7 @@ import Image from "next/image";
 import TherapistCard from "@/components/TherapistCard";
 import { DatePicker } from "@/components/ui/datePicker";
 import { useRouter } from "next/navigation";
+import { fetchTherapists } from "../api/consultation";
 
 function debounce<T extends (...args: Parameters<T>) => void>(func: T, wait: number) {
   let timeout: ReturnType<typeof setTimeout>;
@@ -50,35 +51,6 @@ export default function ConsultationPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const fetchTherapists = async (
-    dateStr = "",
-    consultationType = "",
-    location = ""
-  ) => {
-    setLoading(true);
-    setErrorMessage("");
-    try {
-      const response = await fetch(
-        `${API_URL}/therapists?consultation=${consultationType}&location=${location}&date=${dateStr}`
-      );
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data)
-        setTherapists(data);
-
-        if (data.length === 0) {
-          setErrorMessage("No therapists found for the selected criteria.");
-        }
-      } else {
-        console.error("Error fetching therapists:", response.statusText);
-        setErrorMessage("Error fetching therapists.");
-      }
-    } catch (error) {
-      console.error("Error fetching therapists:", error);
-      setErrorMessage("Error fetching therapists.");
-    }
-    setLoading(false);
-  };
   console.log(therapists, "ini data terapis");
 
   const formatDate = (date: Date | null): string => {

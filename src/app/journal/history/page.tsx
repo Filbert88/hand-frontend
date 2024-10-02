@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { DatePicker } from "@/components/ui/datePicker";
+import { fetchJournalEntriesByDate } from "@/app/api/journal";
 
 interface JournalEntry {
   id: string;
@@ -13,7 +14,7 @@ interface JournalEntry {
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export default function JournalHistory() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-  const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]); 
+  const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]);
 
   const formatDate = (date: Date | null) => {
     if (!date) return "Invalid date";
@@ -26,37 +27,14 @@ export default function JournalHistory() {
   };
 
   const fetchJournalEntries = async (date: string) => {
-    try {
-      const response = await fetch(
-        `${API_URL}/journals?date=${date}`,
-        {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (response.ok) {
-        const data = await response.json();
-        if (data && Array.isArray(data) && data.length > 0) {
-          setJournalEntries(data);
-        } else {
-          setJournalEntries([]); 
-        }
-      } else {
-        setJournalEntries([]); 
-      }
-    } catch (error) {
-      console.error("Error fetching journal entries:", error);
-      setJournalEntries([]); 
-    }
+    const entries = await fetchJournalEntriesByDate(date);
+    setJournalEntries(entries);
   };
 
   const handleDateChange = (date: Date | undefined) => {
     const selected = date ?? new Date();
     setSelectedDate(selected);
-    const formattedDate = selected.toLocaleDateString("en-CA"); 
+    const formattedDate = selected.toLocaleDateString("en-CA");
     fetchJournalEntries(formattedDate);
   };
 
@@ -65,24 +43,28 @@ export default function JournalHistory() {
       const newDate = new Date(selectedDate);
       newDate.setDate(selectedDate.getDate() + (direction === "prev" ? -1 : 1));
       setSelectedDate(newDate);
-      const formattedDate = newDate.toLocaleDateString("en-CA"); 
+      const formattedDate = newDate.toLocaleDateString("en-CA");
       fetchJournalEntries(formattedDate);
     }
   };
 
   useEffect(() => {
     const today = new Date();
-    const localDate = new Date(today.getTime() - today.getTimezoneOffset() * 60000); 
+    const localDate = new Date(
+      today.getTime() - today.getTimezoneOffset() * 60000
+    );
     const formattedDate = localDate.toISOString().split("T")[0];
     fetchJournalEntries(formattedDate);
   }, []);
-  
+
   return (
     <div className="min-h-screen bg-[#FFFDF5] pt-20 sm:pt-28 flex px-10 sm:px-20">
       <div className="mx-auto w-full flex flex-col md:flex-row gap-8">
         <div className="md:w-1/4 flex flex-col justify-between pb-10 sm:pb-24">
           <div>
-            <h1 className="text-4xl font-bold mb-4 text-center sm:text-left">Your Journal</h1>
+            <h1 className="text-4xl font-bold mb-4 text-center sm:text-left">
+              Your Journal
+            </h1>
             <div className="flex flex-col gap-4">
               <DatePicker onDateChange={handleDateChange} />
             </div>
@@ -118,7 +100,7 @@ export default function JournalHistory() {
               {journalEntries.length > 0 ? (
                 journalEntries.map((entry: JournalEntry) => (
                   <div key={entry.id} className="mb-4">
-                    <p>{entry.content || "No content available"}</p> 
+                    <p>{entry.content || "No content available"}</p>
                   </div>
                 ))
               ) : (
