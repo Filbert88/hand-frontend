@@ -1,6 +1,6 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import { User, Pill, HelpCircle, BookOpen, ArrowLeft } from "lucide-react";
 
 // Define types for form inputs
@@ -32,8 +32,12 @@ type ArticlesForm = {
 export default function AddPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const initialCategory = searchParams.get("category") || "Therapist";
- 
+  const [initialCategory, setInitialCategory] = useState<string>("Therapist");
+
+  useEffect(() => {
+    const category = searchParams.get("category") || "Therapist";
+    setInitialCategory(category);
+  }, [searchParams]);
 
   // Form states based on category
   const [therapistForm, setTherapistForm] = useState<TherapistForm>({
@@ -129,7 +133,9 @@ export default function AddPage() {
       </header>
 
       <div
-        className={`${getCategoryColor(initialCategory)} text-black p-4 rounded-lg`}
+        className={`${getCategoryColor(
+          initialCategory
+        )} text-black p-4 rounded-lg`}
       >
         <div className="flex flex-row items-center justify-between mb-4">
           <button
@@ -153,7 +159,10 @@ export default function AddPage() {
                   id="name"
                   value={therapistForm.name}
                   onChange={(e) =>
-                    setTherapistForm({ ...therapistForm, name: e.target.value })
+                    setTherapistForm({
+                      ...therapistForm,
+                      name: e.target.value,
+                    })
                   }
                   placeholder="Enter therapist's name"
                   className="w-full p-2 border rounded-lg focus:outline-none"
@@ -180,7 +189,10 @@ export default function AddPage() {
                   id="bio"
                   value={therapistForm.bio}
                   onChange={(e) =>
-                    setTherapistForm({ ...therapistForm, bio: e.target.value })
+                    setTherapistForm({
+                      ...therapistForm,
+                      bio: e.target.value,
+                    })
                   }
                   placeholder="Enter therapist's bio"
                   className="w-full p-2 border rounded-lg focus:outline-none"
