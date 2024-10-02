@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import { useState } from "react";
 import Link from "next/link";
 import { UserIcon, CalendarIcon, MessageCircleIcon } from "lucide-react";
@@ -75,7 +75,9 @@ export default function AppointmentLayout({
                       : "bg-white text-gray-700 hover:bg-gray-50"
                   }`}
                 >
-                  <item.icon className="w-5 h-5 mr-3" />
+                  {React.createElement(item.icon, {
+                    className: "w-5 h-5 mr-3",
+                  })}
                   {item.label}
                 </Link>
               ))}
