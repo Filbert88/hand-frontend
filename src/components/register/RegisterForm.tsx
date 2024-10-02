@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Toaster, toast } from "sonner";
-
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 // InputField component for reusability
 interface InputFieldProps {
   label: string;
@@ -67,7 +67,7 @@ const RegisterForm: React.FC = () => {
 
     try {
       // Call the API
-      const response = await fetch("http://localhost:8080/api/register", {
+      const response = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

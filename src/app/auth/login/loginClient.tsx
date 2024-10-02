@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { toast, Toaster } from "sonner";
 import { setCookie } from "cookies-next";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,7 +21,7 @@ export default function LoginPage() {
     }
 
     try {
-      const res = await fetch("http://localhost:8080/api/login", {
+      const res = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
