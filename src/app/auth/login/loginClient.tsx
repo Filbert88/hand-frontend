@@ -35,11 +35,28 @@ export default function LoginPage() {
         throw new Error(errorData.message || "Login failed");
       }
       const data = await res.json();
-      console.log(data)
-      setCookie("authToken", data.token, { path: "/" });
-      setCookie("user_id",data.user.ID , { path: "/" });
-      setCookie("user_role",data.user.role, {path: '/'});
-      setCookie("user_name",data.user.name, {path: '/'});
+      console.log(data);
+      setCookie("authToken", data.token, {
+        path: "/",
+        secure: true,
+        sameSite: "none",
+      });
+      setCookie("user_id", data.user.ID, {
+        path: "/",
+        secure: true,
+        sameSite: "none",
+      });
+      setCookie("user_role", data.user.role, {
+        path: "/",
+        secure: true,
+        sameSite: "none",
+      });
+      setCookie("user_name", data.user.name, {
+        path: "/",
+        secure: true,
+        sameSite: "none",
+      });
+
       toast.success("Login successful!");
 
       setTimeout(() => {
