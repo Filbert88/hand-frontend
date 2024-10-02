@@ -1,9 +1,14 @@
-"use client"; // This will ensure the component is treated as a Client Component
+"use client";
 
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Toaster, toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 // InputField component for reusability
 interface InputFieldProps {
   label: string;
@@ -22,14 +27,41 @@ const InputField: React.FC<InputFieldProps> = ({
 }) => {
   return (
     <div className="flex flex-col space-y-1">
-      <label className="text-sm text-gray-700">{label}</label>
-      <input
+      <Label htmlFor={label.toLowerCase().replace(/\s/g, "-")}>{label}</Label>
+      <Input
+        id={label.toLowerCase().replace(/\s/g, "-")}
         type={type}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className="border rounded-lg p-2 w-full text-sm bg-gray-100 placeholder-gray-400"
       />
+    </div>
+  );
+};
+
+// PhoneInputField component with fixed region code
+const PhoneInputField: React.FC<Omit<InputFieldProps, "type">> = ({
+  label,
+  placeholder,
+  value,
+  onChange,
+}) => {
+  return (
+    <div className="flex flex-col space-y-1">
+      <Label htmlFor="phone-number">{label}</Label>
+      <div className="flex">
+        <div className="flex items-center justify-center bg-gray-100 border border-r-0 rounded-l-md px-3">
+          <span className="text-sm text-gray-500">+62</span>
+        </div>
+        <Input
+          id="phone-number"
+          type="tel"
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          className="rounded-l-none"
+        />
+      </div>
     </div>
   );
 };
@@ -61,7 +93,7 @@ const RegisterForm: React.FC = () => {
       name,
       email,
       password,
-      phone_number: phoneNumber,
+      phone_number: "+62" + phoneNumber,
       role: "patient", // Default role as "patient"
     };
 
@@ -86,8 +118,8 @@ const RegisterForm: React.FC = () => {
         setPhoneNumber("");
 
         setTimeout(() => {
-          router.push("/login");
-        }, 1500);
+          router.push("auth/login");
+        }, 500);
       } else {
         const errorData = await response.json();
         toast.error(`Registration failed: ${errorData.message}`);
@@ -100,10 +132,10 @@ const RegisterForm: React.FC = () => {
 
   return (
     <div className="flex flex-col space-y-4 bg-white shadow-lg p-8 rounded-lg max-w-lg mx-auto">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <InputField
-            label="What’s your name?"
+            label="What's your name?"
             placeholder="Your Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -119,7 +151,7 @@ const RegisterForm: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <InputField
-            label="What’s your email?"
+            label="What's your email?"
             placeholder="example@service.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -133,22 +165,18 @@ const RegisterForm: React.FC = () => {
           />
         </div>
 
-        <InputField
+        <PhoneInputField
           label="What's your phone number?"
-          placeholder="Phone Number"
+          placeholder="81234567890"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
 
-        <button
-          type="submit"
-          className="mt-6 bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-all w-full"
-        >
+        <Button type="submit" className="w-full">
           Sign Me Up
-        </button>
+        </Button>
       </form>
 
-      {/* Toaster for feedback */}
       <Toaster position="bottom-right" richColors />
     </div>
   );
