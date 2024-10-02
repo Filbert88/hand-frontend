@@ -143,11 +143,11 @@ export default function Navbar() {
         <div className='flex flex-col items-center justify-center w-full h-full gap-10'>
           {!isLoggedIn ? (
             <>
-              <Link href="/login" className="text-xl my-2 relative group pb-2" onClick={toggleMenu}>
+              <Link href="/auth/login" className="text-xl my-2 relative group pb-2" onClick={toggleMenu}>
                 Log In
                 <span className="absolute left-0 mt-4 bottom-0 w-full h-0.5 bg-white transform scale-x-0 transition-transform duration-300 ease-in-out group-hover:scale-x-100"></span>
               </Link>
-              <Link href="/signup" className="text-xl my-2 relative group pb-2" onClick={toggleMenu}>
+              <Link href="/auth/register" className="text-xl my-2 relative group pb-2" onClick={toggleMenu}>
                 Sign Up
                 <span className="absolute left-0 bottom-0 w-full h-0.5 bg-white transform scale-x-0 transition-transform duration-300 ease-in-out group-hover:scale-x-100"></span>
               </Link>
