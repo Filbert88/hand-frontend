@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
+import { toast } from "sonner";
 export const dynamic = "force-dynamic";
 
 type TherapistForm = {
@@ -122,10 +123,10 @@ export default function AddPage() {
 
         const result = await createTherapist(therapistPayload);
         if (result.success) {
-          alert("Therapist added successfully!");
-          router.push("/dashboard"); // Redirect after success
+          toast.success("Therapist added successfully!");
+          router.push("/dashboard");
         } else {
-          alert(`Failed to add therapist: ${result.message}`);
+          toast.error(`Failed to add therapist: ${result.message}`);
         }
       }
 
@@ -136,7 +137,7 @@ export default function AddPage() {
           if (uploadResult.success) {
             imageUrl = uploadResult.imageUrl;
           } else {
-            alert(`Error uploading image: ${uploadResult.message}`);
+            toast.error(`Error uploading image: ${uploadResult.message}`);
             return;
           }
         }
@@ -152,15 +153,15 @@ export default function AddPage() {
 
         const result = await addMedication(medicationPayload);
         if (result.success) {
-          alert("Medication added successfully!");
-          router.push("/dashboard"); // Redirect after success
+          toast.success("Medication added successfully!");
+          router.push("/dashboard");
         } else {
-          alert(`Failed to add medication: ${result.message}`);
+          toast.error(`Failed to add medication: ${result.message}`);
         }
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("An error occurred while submitting the form.");
+      toast.error("An error occurred while submitting the form.");
     }
   };
 
