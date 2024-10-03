@@ -58,7 +58,7 @@ export default function Page() {
 
   return (
     <div className="px-10 sm:px-20 pt-28 flex flex-col bg-[#E8F2F3] min-h-screen">
-      <h1 className="text-center text-3xl">Let Us Help You!</h1>
+      <h1 className="text-center text-4xl font-gloock mb-6">Let Us Help You!</h1>
       <div className="relative mt-4 font-teachers">
         <input
           className="px-4 py-3 w-full bg-white rounded-xl focus:outline-none sm:text-base text-sm font-teachers"

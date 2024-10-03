@@ -137,7 +137,7 @@ export default function ConsultationPage() {
 
   return (
     <div className="bg-[#FFF6EF] min-h-screen px-12 py-6 pt-28">
-      <h1 className="text-black text-2xl mb-6">Hello! We&apos;re here!</h1>
+      <h1 className="text-black text-4xl mb-6 font-gloock">Hello! We&apos;re here!</h1>
 
       <div className="flex flex-col lg:flex-row gap-10">
         <div className="w-full lg:w-[300px]">
@@ -170,12 +170,12 @@ export default function ConsultationPage() {
             </div>
 
             {/* DatePicker Component */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 font-teachers">
               <DatePicker onDateChange={handleDateChange} />
             </div>
 
             {/* Location Input with Debounce */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 font-teachers">
               <input
                 type="text"
                 placeholder="Enter location"
@@ -184,7 +184,7 @@ export default function ConsultationPage() {
               />
             </div>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 font-teachers">
               <select
                 id="sorting"
                 value={selectedOption}
@@ -210,7 +210,7 @@ export default function ConsultationPage() {
               {errorMessage ? (
                 <div>{errorMessage}</div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 font-teachers">
                   {getFilteredTherapists().map(
                     (therapist: Therapist, index: number) => (
                       <TherapistCard

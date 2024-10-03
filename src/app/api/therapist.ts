@@ -62,6 +62,75 @@ export async function getTherapistSchedule(
   }
 }
 
+export async function fetchUpcomingAppointment(userId: string) {
+  const token = await getToken();
+  try {
+    const response = await fetch(
+      `${API_URL}/appointment/upcomingAppointment/${userId}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching appointments:", error);
+  }
+}
+
+const formatDateForServer = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Add leading zero if necessary
+  const day = date.getDate().toString().padStart(2, "0"); // Add leading zero if necessary
+
+  return `${year}-${month}-${day}`; // Format as "YYYY-MM-DD"
+};
+
+
+export async function closeSchedule(selectedDate: Date | null) {
+  const token = await getToken();
+
+  if (!selectedDate) {
+    console.error("No date selected");
+    return;
+  }
+
+  const formattedDate = formatDateForServer(selectedDate);
+
+  try {
+    const response = await fetch(
+      `${API_URL}/therapists/availability`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          date: formattedDate, // Use formatted date here
+          is_available: false,
+        }),
+      }
+    );
+
+    if (response.ok) {
+      alert("Schedule added successfully!");
+      const data = await response.json();
+      return data;
+    } else {
+      console.error("Error adding schedule");
+    }
+  } catch (error) {
+    console.error("Error adding schedule:", error);
+  }
+}
+
+
 export interface Therapist {
   name: string;
   location: string;

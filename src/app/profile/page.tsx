@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import LoadingBouncer from "@/components/Loading";
 
 interface UserData {
@@ -277,7 +276,7 @@ export default function UserProfile() {
                   height={100}
                   className="h-24 w-24 rounded-full object-cover border-2 border-blue-500"
                 />
-                <Label
+                <label
                   htmlFor="profile-image"
                   className="absolute bottom-0 right-0 cursor-pointer"
                 >
@@ -291,13 +290,13 @@ export default function UserProfile() {
                     className="hidden"
                     onChange={handleImageChange}
                   />
-                </Label>
+                </label>
               </div>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
+              <label htmlFor="name" className="text-right">
                 Name
-              </Label>
+              </label>
               <Input
                 id="name"
                 value={editedData.name || ""}
@@ -308,9 +307,9 @@ export default function UserProfile() {
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="email" className="text-right">
+              <label htmlFor="email" className="text-right">
                 Email
-              </Label>
+              </label>
               <Input
                 id="email"
                 value={userData?.email || ""}
@@ -319,9 +318,9 @@ export default function UserProfile() {
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="phone" className="text-right">
+              <label htmlFor="phone" className="text-right">
                 Phone
-              </Label>
+              </label>
               <Input
                 id="phone"
                 value={userData?.phone_number || ""}

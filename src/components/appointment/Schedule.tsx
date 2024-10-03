@@ -117,7 +117,7 @@ export const Schedule: React.FC<ScheduleProps> = ({
   };
 
   return (
-    <div className="flex-1 p-4 bg-[#FFF3E5] rounded-lg shadow-lg">
+    <div className="flex-1 p-4 bg-[#FFF3E5] rounded-lg shadow-lg mb-32">
       <h2 className="text-2xl font-bold mb-4">Jadwal Kosong</h2>
       <div className="space-y-4">
         {/* Consultation Type Selector */}

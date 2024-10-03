@@ -46,7 +46,7 @@ const TherapistPage: React.FC<TherapistPageProps> = ({ params }) => {
   }
 
   return (
-    <div className="min-h-screen  px-10 bg-[#FFE9D0] ">
+    <div className="min-h-screen  px-10 bg-[#FFE9D0] font-teachers">
       <div className="flex-1 flex flex-col md:flex-row gap-4">
         <div className="w-full md:w-1/2">
           <TherapistDetails therapist={therapistDetails} />
