@@ -35,36 +35,61 @@ export default function EnhancedAnonymousChat() {
 
   // Initialize WebSocket connection
   useEffect(() => {
-    const websocket = createWebSocket(SOCKET_SERVER_URL); // Replace with your actual WebSocket server URL
-    websocket.onopen = () => {
-      console.log("connected")
-      websocket.send(JSON.stringify({ event: "check_match", data: "" }));
-    };
-    websocket.onmessage = (event :MessageEvent) => {
-      const data = JSON.parse(event.data);
-      if (data.event === "matched") {
-        const roomId = data.data;// Assuming the format "Matched in room {roomId}"
-        router.push(`/find/${roomId}`); // Redirect to the matched room
-      }
-      if (data.event === "in_queue") {
-        setStep('finding');
-      }
-    };
-    websocket.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
-    setWs(websocket);
+    const initWebSocket = async () => {
+      try {
+        const websocket = await createWebSocket(SOCKET_SERVER_URL); // Ensure your token is correctly passed if needed
+  
+        websocket.onopen = () => {
+          console.log("connected");
+          websocket.send(JSON.stringify({ event: "check_match", data: "" }));
+        };
+  
+        websocket.onmessage = (event: MessageEvent) => {
+          const data = JSON.parse(event.data);
+          if (data.event === "matched") {
+            const roomId = data.data;
+            router.push(`/find/${roomId}`); // Redirect to the matched room
+          }
+          if (data.event === "in_queue") {
+            setStep('finding');
+          }
 
-    return () => {
-      websocket.close();
+          if (data.event === "cancel_find"){
+            setStep("select")
+          }
+        };
+  
+        websocket.onerror = (error: Event) => {
+          console.error("WebSocket error:", error);
+        };
+  
+        setWs(websocket);
+  
+        return () => {
+          websocket.close();
+        };
+      } catch (error) {
+        console.error('Failed to initialize WebSocket:', error);
+      }
     };
-  }, []);
+  
+    initWebSocket();
+  }, [setWs]); // Ensure dependencies are correctly listed
 
   const handleFindMatch = () => {
     if (selectedMood && ws) {
       ws.send(JSON.stringify({
         event: "find_match",
         data: JSON.stringify({ emote: selectedMood.id }),
+      }));
+    }
+  };
+
+  const handleCancelFind = () => {
+    if ( ws) {
+      ws.send(JSON.stringify({
+        event: "cancel_find",
+        data: "",
       }));
     }
   };
@@ -114,6 +139,12 @@ export default function EnhancedAnonymousChat() {
           <div className="bg-white rounded-2xl shadow-lg p-10 text-center">
             <Loader className="h-16 w-16 animate-spin mx-auto mb-6 text-pink-500" />
             <p className="text-xl text-gray-700">Finding someone who feels {selectedMood?.name.toLowerCase()}...</p>
+            <Button
+                className="px-8 py-3 bg-[#FFD3E4] text-pink-600 hover:bg-pink-200 transition-all duration-300 transform hover:scale-105"
+                onClick={handleCancelFind}
+              >
+                Cancel Find
+              </Button>
           </div>
         )}
 
