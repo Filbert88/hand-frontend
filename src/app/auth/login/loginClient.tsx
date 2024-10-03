@@ -86,18 +86,18 @@ export default function LoginPage() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-blue-50 p-6">
       <Toaster position="bottom-right" richColors />{" "}
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-auto w-full">
-        <h1 className="text-3xl font-bold text-center mb-4">
+        <h1 className="text-3xl font-bold text-center mb-4 font-gloock">
           Hi! Nice to meet You again!
         </h1>
 
         <form onSubmit={handleSubmit}>
-          {error && <p className="text-red-500 mb-4">{error}</p>}
+          {error && <p className="text-red-500 mb-4 font-teachers">{error}</p>}
 
           <div className="mb-4">
-            <label className="block text-gray-700">What’s your email?</label>
+            <label className="font-teachers block text-gray-700">What’s your email?</label>
             <input
               type="email"
-              className="w-full p-2 border rounded-lg bg-gray-100 placeholder-gray-400 focus:outline-none"
+              className="font-teachers w-full p-2 border rounded-lg bg-gray-100 placeholder-gray-400 focus:outline-none"
               placeholder="example@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -106,10 +106,10 @@ export default function LoginPage() {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700">Your password?</label>
+            <label className="font-teachers block text-gray-700">Your password?</label>
             <input
               type="password"
-              className="w-full p-2 border rounded-lg bg-gray-100 placeholder-gray-400 focus:outline-none"
+              className="font-teachers w-full p-2 border rounded-lg bg-gray-100 placeholder-gray-400 focus:outline-none"
               placeholder="if you forget, kindly click the link below!"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -118,14 +118,14 @@ export default function LoginPage() {
           </div>
 
           <div className="text-right text-gray-500">
-            <a href="/forgot-password" className="underline">
+            <a href="/forgot-password" className="font-teachers underline">
               Having trouble? Click here!
             </a>
           </div>
 
           <button
             type="submit"
-            className="mt-6 bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-all w-full"
+            className="font-teachers mt-6 bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-all w-full"
           >
             Log In
           </button>

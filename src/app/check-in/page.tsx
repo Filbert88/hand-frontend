@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { getTodayCheckIn, createCheckIn, updateCheckIn, CheckInData } from '../api/service'; // Adjust path as necessary
+import { getTodayCheckIn, createCheckIn, updateCheckIn, CheckInData } from '../api/service'; 
 import { toast } from 'sonner';
 import LoadingBouncer from '@/components/Loading';
 
@@ -37,15 +37,15 @@ export default function MoodTracker() {
   const [differentFeeling, setDifferentFeeling] = useState<string>('');
   const [selectedFeelings, setSelectedFeelings] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isUpdating, setIsUpdating] = useState<boolean>(false); // New state to track if we're updating
+  const [isUpdating, setIsUpdating] = useState<boolean>(false); 
 
   useEffect(() => {
     getTodayCheckIn().then(data => {
       if (data) {
-        setSelectedEmotion(data.mood_score - 1); // Adjust index if needed
+        setSelectedEmotion(data.mood_score - 1); 
         setDifferentFeeling(data.notes);
         setSelectedFeelings(data.feelings.split(',').map(Number));
-        setIsUpdating(true); // Set to updating if we got check-in data
+        setIsUpdating(true); 
       }
       setIsLoading(false);
     }).catch(error => {
@@ -57,25 +57,25 @@ export default function MoodTracker() {
   const handleSave = async () => {
     setIsLoading(true);
     const checkInData: CheckInData = {
-      mood_score: selectedEmotion ? selectedEmotion + 1 : 1, // Adjust for zero-based index
-      feelings: selectedFeelings.join(','), // Convert feelings to comma-separated string
+      mood_score: selectedEmotion ? selectedEmotion + 1 : 1, 
+      feelings: selectedFeelings.join(','), 
       notes: differentFeeling
     };
 
     try {
       let response;
       if (isUpdating) {
-        // Update existing check-in
+
         console.log(checkInData)
         response = await updateCheckIn(checkInData);
         toast.success("Update successful")
       } else {
-        // Create new check-in
+
         response = await createCheckIn(checkInData);
         toast.success("Create succesful")
       }
       console.log('CheckIn Success:', response);
-      // Handle success (e.g., show a message, redirect)
+
     } catch (error) {
       console.log("Check-in failed")
       console.error('Error during check-in operation:', error);
@@ -89,10 +89,10 @@ export default function MoodTracker() {
   }
 
   return (
-    <div className="min-h-screen max-h-screen bg-[#FFF2F2] flex items-center justify-center p-4 font-gloock">
+    <div className="min-h-screen max-h-screen bg-[#FFF2F2] flex items-center justify-center p-4">
       <div className="rounded-lg px-10 md:px-20 lg:px-40 w-full h-full">
-        <h1 className="text-2xl sm:text-2xl md:text-3xl lg:text-6xl xl:text-7xl font-bold text-center mb-6">How are you doing today?</h1>
-        <p className="text-center text-sm md:text-lg lg:text-xl xl:text-2xl tracking-wider text-gray-600 mb-4">Pick your most dominant emotion right now</p>
+        <h1 className="font-gloock text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-center mb-6 mt-6">How are you doing today?</h1>
+        <p className="font-teachers text-center text-m md:text-lg lg:text-xl xl:text-2xl tracking-wider text-gray-600 mb-4">Pick your most dominant emotion right now</p>
         <div className="flex justify-center flex-wrap space-x-2 mb-6">
           {emotions.map((emotion, index) => (
             <button
@@ -102,14 +102,14 @@ export default function MoodTracker() {
               }`}
               onClick={() => setSelectedEmotion(index)}
             >
-              <div className='relative w-[40px] h-[40px] md:w-[55px] md:h-[55px] lg:w-[70px] lg:h-[70px] xl:w-[90px] xl:h-[90px] 2xl:w-[110px] 2xl:h-[110px]'>
+              <div className='relative w-[40px] h-[40px] md:w-[50px] md:h-[50px] lg:w-[60px] lg:h-[60px] xl:w-[70px] xl:h-[70px] 2xl:w-[80px] 2xl:h-[80px]'>
                 <Image src={emotion.emoji} alt="emoji" layout='fill' />
               </div>
             </button>
           ))}
         </div>
         <div className="my-5 lg:my-10">
-          <label htmlFor="different" className="block text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-700">
+          <label htmlFor="different" className="font-gloock block text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-700">
             Anything you felt different?
           </label>
           <input
@@ -121,12 +121,12 @@ export default function MoodTracker() {
           />
         </div>
         <div className='mb-5 lg:mb-10'>
-          <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-700">Do you feel any of these?</p>
+          <p className="font-gloock text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-700">Do you feel any of these?</p>
           <div className="flex flex-wrap gap-3 mt-2 md:mt-3 xl:mt-5">
             {feelings.map((feeling) => (
               <button
                 key={feeling.id}
-                className={`px-3 py-1 rounded-full text-sm md:text-lg lg:text-xl shadow-lg ${
+                className={`font-teachers px-3 py-1 rounded-full text-sm md:text-lg lg:text-xl shadow-lg ${
                   selectedFeelings.includes(feeling.id)
                     ? 'bg-[#aba4a4] text-gray-800'
                     : 'bg-[#DAD4D4] text-[#7B7B7B]'
@@ -145,7 +145,7 @@ export default function MoodTracker() {
           </div>
         </div>
         <div className='w-full flex items-end justify-end mt-10'>
-          <Button className='text-lg md:text-xl lg:text-2xl' size={'lg'} onClick={handleSave}>Save</Button>
+          <Button className='text-lg md:text-xl lg:text-2xl font-teachers' size={'lg'} onClick={handleSave}>Save</Button>
         </div>
       </div>
     </div>
