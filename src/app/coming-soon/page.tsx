@@ -9,10 +9,10 @@ export default function ComingSoonPage() {
       }}
     >
       <div className="text-center">
-        <h1 className="text-4xl sm:text-6xl font-bold text-black">
+        <h1 className="text-4xl sm:text-6xl text-black font-gloock">
           We have something great prepared!
         </h1>
-        <p className="mt-4 text-3xl sm:text-4xl font-bold text-black">
+        <p className="mt-4 text-3xl sm:text-4xl text-black font-gloock">
           Coming soon! (´｡• ◡ •｡`) ♡
         </p>
       </div>
