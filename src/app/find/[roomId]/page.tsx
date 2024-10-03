@@ -62,54 +62,60 @@ const ChatPage :React.FC<ChatRoomProps> = ({ params }) => {
     }, [roomId]);
 
     useEffect(() => {
-      setCurrentUserId(getCookie('user_id') as string);
-      console.log(getCookie('user_id') as string)
-      const websocket = createWebSocket(SOCKET_SERVER_URL);
-
-      websocket.onopen = () => {
-        console.log('WebSocket connected');
-        websocket.send(JSON.stringify({ event: "check_match", data: "" }));
-        setWs(websocket);
-      };
-  
-      websocket.onmessage = (event: MessageEvent) => {
-        const message = JSON.parse(event.data);
-  
-        if (message.event === "message") {
-          console.log(message.data)
-          setMessages((prevMessages) => [...prevMessages, message.data as ChatMessage]);
+      const initializeWebSocket = async () => {
+        try {
+          const userId = await getCookie('user_id'); // Assuming getCookie returns a promise, if not, no need for await here.
+          setCurrentUserId(userId);
+          console.log(userId);
+    
+          const websocket = await createWebSocket(SOCKET_SERVER_URL);
+    
+          websocket.onopen = () => {
+            console.log('WebSocket connected');
+            websocket.send(JSON.stringify({ event: "check_match", data: "" }));
+            setWs(websocket);
+          };
+    
+          websocket.onmessage = (event: MessageEvent) => {
+            const message = JSON.parse(event.data);
+    
+            if (message.event === "message") {
+              console.log(message.data)
+              setMessages((prevMessages) => [...prevMessages, message.data]);
+            }
+    
+            if (message.event === "free") {
+              router.push("/find");
+            }
+    
+            if (message.event === "end") {
+              setShowChatEndedPopup(true);
+              setTimeout(() => {
+                setShowChatEndedPopup(false);
+                router.push("/find");
+              }, 3000);
+            }
+          };
+    
+          websocket.onerror = (event: Event) => {
+            console.error('WebSocket error:', event);
+          };
+    
+          websocket.onclose = () => {
+            console.log('WebSocket disconnected');
+            setWs(null);
+          };
+    
+          return () => {
+            websocket.close(); // Clean up WebSocket connection on component unmount
+          };
+        } catch (error) {
+          console.error('Failed to initialize WebSocket or get user ID:', error);
         }
-
-        if (message.event === "free"){
-          router.push("/find")
-        }
-
-        if (message.event === "end") {
-          setShowChatEndedPopup(true);
-          setTimeout(() => {
-            setShowChatEndedPopup(false);
-            router.push("/find");
-          }, 3000);
-        }
-  
       };
-
-      websocket.onerror = (event: Event) => {
-        console.error('WebSocket error:', event);
-      };
-  
-      websocket.onclose = () => {
-        console.log('WebSocket disconnected');
-        setWs(null);
-      };
-  
-  
-      return () => {
-        if (ws) {
-          ws.close(); // Clean up WebSocket connection
-        }
-      };
-    }, []);
+    
+      initializeWebSocket();
+    }, []); 
   
     const handleSendMessage = () => {
       if (ws && newMessage.trim()) {
