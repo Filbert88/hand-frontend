@@ -24,7 +24,7 @@ export default function NotFoundPage() {
 
         <div className="text-center md:text-left">
           <p className="text-xl md:text-2xl mb-4 text-gray-700">
-            It seemed you've wandered pretty far! <br />
+            It seemed you&apos;ve wandered pretty far! <br />
             Let's get you <span className="font-bold">back!</span>
           </p>
           <button
