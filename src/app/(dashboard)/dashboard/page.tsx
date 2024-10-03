@@ -1,6 +1,7 @@
-"use client"
-import { useRouter } from 'next/navigation'
+"use client";
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import axios from 'axios';
 
 type AdminCardProps = {
   title: string;
@@ -31,8 +32,23 @@ type CardData = {
 export default function AdminDashboard() {
   const router = useRouter();
 
-  const handleCardClick = (path: string) => {
-    router.push(path);
+  const validatePath = async (path: string): Promise<boolean> => {
+    try {
+      const response = await axios.get(`/api/validatePath?path=${path}`);
+      return response.data.isValid;
+    } catch (error) {
+      console.error("Error validating path", error);
+      return false;
+    }
+  };
+
+  const handleCardClick = async (path: string) => {
+    const isValid = await validatePath(path);
+    if (isValid) {
+      router.push(path);
+    } else {
+      router.push('/not-found');
+    }
   };
 
   const cards: CardData[] = [
