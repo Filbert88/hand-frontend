@@ -43,7 +43,7 @@ export default function JournalPage() {
               </Link>
               <button
                 onClick={handleSave}
-                className="mt-4 px-6 py-2 bg-[#F6F68E] text-black rounded-xl transition-colors flex items-center mx-auto"
+                className="font-teachers mt-4 px-6 py-2 bg-[#F6F68E] text-black rounded-xl transition-colors flex items-center mx-auto"
               >
                 Save Writing
               </button>
@@ -53,7 +53,7 @@ export default function JournalPage() {
           <div className="min-h-80 w-full md:w-2/3 bg-white p-6 relative border border-r-2 border-r-[#C1C1BE] border-l-2 border-l-[#C1C1BE]">
             <div className="absolute inset-0 bg-[linear-gradient(transparent_27px,#EEEEEE_1px)] bg-[size:100%_28px] pointer-events-none" />
             <textarea
-              className="w-full h-full p-0 bg-transparent resize-none border-none outline-none leading-[28px] relative z-10"
+              className="font-teachers w-full h-full p-0 bg-transparent resize-none border-none outline-none leading-[28px] relative z-10"
               style={{ lineHeight: "28px" }}
               placeholder="Start writing here..."
               value={journalEntry}

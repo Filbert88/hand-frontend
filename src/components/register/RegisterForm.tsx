@@ -10,7 +10,7 @@ import LoadingBouncer from "../Loading";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-// InputField component for reusability
+
 interface InputFieldProps {
   label: string;
   placeholder: string;
@@ -27,7 +27,7 @@ const InputField: React.FC<InputFieldProps> = ({
   onChange,
 }) => {
   return (
-    <div className="flex flex-col space-y-1">
+    <div className="flex flex-col space-y-1 font-teachers">
       <Label htmlFor={label.toLowerCase().replace(/\s/g, "-")}>{label}</Label>
       <Input
         id={label.toLowerCase().replace(/\s/g, "-")}
@@ -40,7 +40,7 @@ const InputField: React.FC<InputFieldProps> = ({
   );
 };
 
-// PhoneInputField component with fixed region code
+
 const PhoneInputField: React.FC<Omit<InputFieldProps, "type">> = ({
   label,
   placeholder,
@@ -48,7 +48,7 @@ const PhoneInputField: React.FC<Omit<InputFieldProps, "type">> = ({
   onChange,
 }) => {
   return (
-    <div className="flex flex-col space-y-1">
+    <div className="flex flex-col space-y-1 font-teachers">
       <Label htmlFor="phone-number">{label}</Label>
       <div className="flex">
         <div className="flex items-center justify-center bg-gray-100 border border-r-0 rounded-l-md px-3">
@@ -91,17 +91,16 @@ const RegisterForm: React.FC = () => {
       return;
     }
 
-    // Prepare data for API call
     const data = {
       name,
       email,
       password,
       phone_number: "+62" + phoneNumber,
-      role: "patient", // Default role as "patient"
+      role: "patient", 
     };
 
     try {
-      // Call the API
+
       const response = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: {
@@ -110,7 +109,7 @@ const RegisterForm: React.FC = () => {
         body: JSON.stringify(data),
       });
 
-      // Handle API response
+
       if (response.ok) {
         toast.success("Registration successful!");
 
@@ -127,7 +126,7 @@ const RegisterForm: React.FC = () => {
         const errorData = await response.json();
         toast.error(`Registration failed: ${errorData.message}`);
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
     } finally {
@@ -140,7 +139,7 @@ const RegisterForm: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col space-y-4 bg-white shadow-lg p-8 rounded-lg max-w-lg mx-auto">
+    <div className="flex flex-col space-y-4 bg-white shadow-lg p-8 rounded-lg max-w-lg mx-auto font-teachers">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <InputField
@@ -158,7 +157,7 @@ const RegisterForm: React.FC = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-teachers">
           <InputField
             label="What's your email?"
             placeholder="example@service.com"
