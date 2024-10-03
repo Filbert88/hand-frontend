@@ -8,6 +8,10 @@ import {
   uploadImage,
 } from "@/app/api/user";
 import { addMedication } from "@/app/api/medication";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
 export const dynamic = "force-dynamic";
 
 type TherapistForm = {
@@ -324,99 +328,112 @@ export default function AddPage() {
 
             {initialCategory === "Medications" && (
               <>
-                <div>
-                  <label htmlFor="medName">Medication Name</label>
-                  <input
-                    id="medName"
-                    value={medicationsForm.medName}
-                    onChange={(e) =>
-                      setMedicationsForm({
-                        ...medicationsForm,
-                        medName: e.target.value,
-                      })
-                    }
-                    placeholder="Enter medication name"
-                    className="w-full p-2 border rounded-lg focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="stock">Stock</label>
-                  <input
-                    id="stock"
-                    type="number"
-                    value={medicationsForm.stock}
-                    onChange={(e) =>
-                      setMedicationsForm({
-                        ...medicationsForm,
-                        stock: parseInt(e.target.value),
-                      })
-                    }
-                    placeholder="Enter stock quantity"
-                    className="w-full p-2 border rounded-lg focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="price">Price</label>
-                  <input
-                    id="price"
-                    type="number"
-                    value={medicationsForm.price}
-                    onChange={(e) =>
-                      setMedicationsForm({
-                        ...medicationsForm,
-                        price: parseFloat(e.target.value),
-                      })
-                    }
-                    placeholder="Enter price"
-                    className="w-full p-2 border rounded-lg focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="description">Description</label>
-                  <textarea
-                    id="description"
-                    value={medicationsForm.description}
-                    onChange={(e) =>
-                      setMedicationsForm({
-                        ...medicationsForm,
-                        description: e.target.value,
-                      })
-                    }
-                    placeholder="Enter medication description"
-                    className="w-full p-2 border rounded-lg focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="requiresPrescription">
-                    Requires Prescription
-                  </label>
-                  <input
-                    id="requiresPrescription"
-                    type="checkbox"
-                    checked={medicationsForm.requiresPrescription}
-                    onChange={(e) =>
-                      setMedicationsForm({
-                        ...medicationsForm,
-                        requiresPrescription: e.target.checked,
-                      })
-                    }
-                    className="w-full p-2 border rounded-lg focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="image">Image</label>
-                  <input
-                    id="image"
-                    type="file"
-                    onChange={(e) =>
-                      setMedicationsForm({
-                        ...medicationsForm,
-                        image: e.target.files ? e.target.files[0] : null,
-                      })
-                    }
-                    className="w-full p-2 border rounded-lg focus:outline-none"
-                  />
-                </div>
+                <Card className="w-full max-w-2xl mx-auto">
+                  <CardHeader>
+                    <CardTitle className="text-2xl font-bold text-center">
+                      Medication Registration
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <label htmlFor="medName">Medication Name</label>
+                        <Input
+                          id="medName"
+                          value={medicationsForm.medName}
+                          onChange={(e) =>
+                            setMedicationsForm({
+                              ...medicationsForm,
+                              medName: e.target.value,
+                            })
+                          }
+                          placeholder="Enter medication name"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label htmlFor="stock">Stock</label>
+                        <Input
+                          id="stock"
+                          type="number"
+                          value={medicationsForm.stock.toString()}
+                          onChange={(e) =>
+                            setMedicationsForm({
+                              ...medicationsForm,
+                              stock: parseInt(e.target.value),
+                            })
+                          }
+                          placeholder="Enter stock quantity"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label htmlFor="price">Price</label>
+                        <Input
+                          id="price"
+                          type="number"
+                          value={medicationsForm.price.toString()}
+                          onChange={(e) =>
+                            setMedicationsForm({
+                              ...medicationsForm,
+                              price: parseFloat(e.target.value),
+                            })
+                          }
+                          placeholder="Enter price"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label htmlFor="requiresPrescription">
+                          Requires Prescription
+                        </label>
+                        <div className="flex items-center space-x-2">
+                          <Switch
+                            id="requiresPrescription"
+                            checked={medicationsForm.requiresPrescription}
+                            onCheckedChange={(checked: boolean) =>
+                              setMedicationsForm({
+                                ...medicationsForm,
+                                requiresPrescription: checked,
+                              })
+                            }
+                          />
+                          <label htmlFor="requiresPrescription">
+                            {medicationsForm.requiresPrescription
+                              ? "Yes"
+                              : "No"}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="description">Description</label>
+                      <Textarea
+                        id="description"
+                        value={medicationsForm.description}
+                        onChange={(e) =>
+                          setMedicationsForm({
+                            ...medicationsForm,
+                            description: e.target.value,
+                          })
+                        }
+                        placeholder="Enter medication description"
+                        rows={4}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="image">Image</label>
+                      <Input
+                        id="image"
+                        type="file"
+                        onChange={(e) =>
+                          setMedicationsForm({
+                            ...medicationsForm,
+                            image: e.target.files ? e.target.files[0] : null,
+                          })
+                        }
+                        className="cursor-pointer"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
               </>
             )}
 
