@@ -4,17 +4,27 @@ import { useState, FormEvent, useEffect, Suspense } from "react";
 import { User, Pill, HelpCircle, BookOpen, ArrowLeft } from "lucide-react";
 
 export const dynamic = 'force-dynamic';
-// Define types for form inputs
+
 type TherapistForm = {
   name: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+  location: string;
   specialization: string;
-  bio: string;
+  consultation: string;
+  appointmentRate: number;
 };
 
 type MedicationsForm = {
   medName: string;
   dosage: string;
   sideEffects: string;
+  stock: number;
+  price: number;
+  description: string;
+  requiresPrescription: boolean;
+  image: File | null; 
 };
 
 type HelpForm = {
@@ -29,11 +39,11 @@ type ArticlesForm = {
   content: string;
 };
 
-// Main component
 export default function AddPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [initialCategory, setInitialCategory] = useState<string>("Therapist");
+  console.log(searchParams);
 
   useEffect(() => {
     const category = searchParams.get("category") || "Therapist";
@@ -43,13 +53,23 @@ export default function AddPage() {
   // Form states based on category
   const [therapistForm, setTherapistForm] = useState<TherapistForm>({
     name: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+    location: "",
     specialization: "",
-    bio: "",
+    consultation: "",
+    appointmentRate: 0
   });
   const [medicationsForm, setMedicationsForm] = useState<MedicationsForm>({
     medName: "",
     dosage: "",
     sideEffects: "",
+    stock: 0,
+    price: 0,
+    description: "",
+    requiresPrescription: false,
+    image: null, // Image upload field initialized
   });
   const [helpForm, setHelpForm] = useState<HelpForm>({
     topic: "",
@@ -58,7 +78,7 @@ export default function AddPage() {
   });
   const [articlesForm, setArticlesForm] = useState<ArticlesForm>({
     title: "",
-    type: "",
+    type: "article",
     content: "",
   });
 
@@ -171,6 +191,51 @@ export default function AddPage() {
                   />
                 </div>
                 <div>
+                  <label htmlFor="email">Email</label>
+                  <input
+                    id="email"
+                    value={therapistForm.email}
+                    onChange={(e) =>
+                      setTherapistForm({
+                        ...therapistForm,
+                        email: e.target.value,
+                      })
+                    }
+                    placeholder="Enter email"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="password">Password</label>
+                  <input
+                    id="password"
+                    value={therapistForm.password}
+                    onChange={(e) =>
+                      setTherapistForm({
+                        ...therapistForm,
+                        password: e.target.value,
+                      })
+                    }
+                    placeholder="Enter password"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="location">Location</label>
+                  <input
+                    id="location"
+                    value={therapistForm.location}
+                    onChange={(e) =>
+                      setTherapistForm({
+                        ...therapistForm,
+                        location: e.target.value,
+                      })
+                    }
+                    placeholder="Enter location"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+                <div>
                   <label htmlFor="specialization">Specialization</label>
                   <input
                     id="specialization"
@@ -185,21 +250,7 @@ export default function AddPage() {
                     className="w-full p-2 border rounded-lg focus:outline-none"
                   />
                 </div>
-                <div>
-                  <label htmlFor="bio">Bio</label>
-                  <textarea
-                    id="bio"
-                    value={therapistForm.bio}
-                    onChange={(e) =>
-                      setTherapistForm({
-                        ...therapistForm,
-                        bio: e.target.value,
-                      })
-                    }
-                    placeholder="Enter therapist's bio"
-                    className="w-full p-2 border rounded-lg focus:outline-none"
-                  />
-                </div>
+         
               </>
             )}
             {initialCategory === "Medications" && (

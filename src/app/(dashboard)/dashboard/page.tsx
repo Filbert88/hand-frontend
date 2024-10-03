@@ -36,10 +36,10 @@ export default function AdminDashboard() {
   };
 
   const cards: CardData[] = [
-    { title: "Add Therapist", src: "/floatingBar/chatAnon.svg", color: "bg-[#CEC8BD]", path: "/add?category=Therapist" },
-    { title: "Add Medications", src: "/floatingBar/medication.svg", color: "bg-[#E5CED6]", path: "/add?category=Medications" },
-    { title: "Add Help", src: "/floatingBar/help.svg", color: "bg-[#CEE4E5]", path: "/add?category=Help" },
-    { title: "Add Articles & Videos", src: "/floatingBar/article.svg", color: "bg-[#C8BDCE]", path: "/add?category=Articles" },
+    { title: "Add Therapist", src: "/floatingBar/chatAnon.svg", color: "bg-[#CEC8BD]", path: "/dashboard/add?category=Therapist" },
+    { title: "Add Medications", src: "/floatingBar/medication.svg", color: "bg-[#E5CED6]", path: "/dashboard/add?category=Medications" },
+    { title: "Add Help", src: "/floatingBar/help.svg", color: "bg-[#CEE4E5]", path: "/dashboard/add?category=Help" },
+    { title: "Add Articles & Videos", src: "/floatingBar/article.svg", color: "bg-[#C8BDCE]", path: "/dashboard/add?category=Articles" },
   ];
 
   return (

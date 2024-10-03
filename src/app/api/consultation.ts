@@ -36,3 +36,85 @@ export async function fetchTherapists(
     return { therapists: [], errorMessage: "Error fetching therapists." };
   }
 }
+
+type Medication = {
+  id: string;
+  image_url: string;
+  stock: number;
+  name: string;
+  price: number;
+  description: string;
+  requiresPrescription: boolean;
+  createdAt: string;
+  updatedAt: string;
+  quantity: number;
+  dosage: string;
+};
+
+export async function SaveConsultation(
+  consultationNotes: string,
+  selectedMedications: Medication[],
+  appointmentID: string
+): Promise<void> {
+  const token = await getToken();
+
+  const payload = {
+    conclusion: consultationNotes,
+    medications: selectedMedications.map((med) => ({
+      medication_id: med.id,
+      dosage: med.dosage,
+      quantity: med.quantity.toString(),
+    })),
+  };
+
+  console.log("Payload:", payload);
+
+  try {
+    const response = await fetch(
+      `${API_URL}/therapists/consultation-history/${appointmentID}`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to save consultation");
+    }
+
+    console.log("Consultation saved successfully!");
+  } catch (error) {
+    console.error("Error saving consultation:", error);
+  }
+}
+
+export async function GetUserByAppointmentID(appointmentID: string) {
+  const token = await getToken();
+  try {
+    const response = await fetch(
+      `${API_URL}/appointment/${appointmentID}/user`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to save consultation");
+    }
+    const data = await response.json();
+    return data;
+    console.log("Consultation saved successfully!");
+  } catch (error) {
+    console.error("Error saving consultation:", error);
+  }
+}
