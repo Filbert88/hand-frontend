@@ -43,7 +43,7 @@ export default function Home() {
                 />
               </div>
             </Link>
-            <span className="font-teachers font-semibold text-m m:text-m text-center">{feature.name}</span>
+            <span className="font-teachers font-semibold text-sm md:text-lg text-center">{feature.name}</span>
           </div>
         ))}
       </div>

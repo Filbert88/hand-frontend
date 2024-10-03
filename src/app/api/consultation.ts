@@ -118,3 +118,21 @@ export async function GetUserByAppointmentID(appointmentID: string) {
     console.error("Error saving consultation:", error);
   }
 }
+
+export async function fetchConsultations(userId: string) {
+  const token = await getToken();
+  try {
+    const response = await fetch(`${API_URL}/consultations/${userId}`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await response.json();
+    return data.consultations;
+  } catch (error) {
+    console.log(error);
+  }
+}

@@ -6,7 +6,7 @@ import { DatePicker } from "@/components/ui/datePicker";
 import { useRouter } from "next/navigation";
 import { fetchTherapists } from "../api/consultation";
 import LoadingBouncer from "@/components/Loading";
-
+import Link from "next/link";
 function debounce<T extends (...args: Parameters<T>) => void>(
   func: T,
   wait: number
@@ -20,19 +20,19 @@ function debounce<T extends (...args: Parameters<T>) => void>(
 
 interface User {
   email: string;
-  image_url: string; 
+  image_url: string;
   is_mobile_verified: boolean;
   name: string;
-  password: string; 
+  password: string;
   phone_number: string;
-  role: string; 
+  role: string;
 }
 
 interface Therapist {
   ID: string;
   AppointmentRate: number;
-  Consultation: string; 
-  CreatedAt: string; 
+  Consultation: string;
+  CreatedAt: string;
   Location: string;
   Specialization: string;
   UpdatedAt: string;
@@ -42,7 +42,6 @@ interface Therapist {
 
 export default function ConsultationPage() {
   const router = useRouter();
-  const [selectedOption, setSelectedOption] = useState("");
   const [selectedFilter, setSelectedFilter] = useState<
     "online" | "offline" | null
   >(null);
@@ -94,7 +93,7 @@ export default function ConsultationPage() {
           therapist.Consultation === "hybrid"
         );
       }
-      return true; 
+      return true;
     });
   };
 
@@ -127,17 +126,18 @@ export default function ConsultationPage() {
   };
 
   const handleAppointment = (therapistId: string) => {
-    // Redirect to the dynamic appointment page for the therapist
     router.push(`/appointment/${therapistId}`);
   };
 
-  if(loading){
-    return <LoadingBouncer />
+  if (loading) {
+    return <LoadingBouncer />;
   }
 
   return (
     <div className="bg-[#FFF6EF] min-h-screen px-12 py-6 pt-28">
-      <h1 className="text-black text-4xl mb-6 font-gloock">Hello! We&apos;re here!</h1>
+      <h1 className="text-black text-4xl mb-6 font-gloock">
+        Hello! We&apos;re here!
+      </h1>
 
       <div className="flex flex-col lg:flex-row gap-10">
         <div className="w-full lg:w-[300px]">
@@ -168,43 +168,33 @@ export default function ConsultationPage() {
                 onClick={() => handleFilterClick("offline")}
               />
             </div>
-
-            {/* DatePicker Component */}
             <div className="flex flex-col gap-4 font-teachers">
               <DatePicker onDateChange={handleDateChange} />
             </div>
 
-            {/* Location Input with Debounce */}
+
             <div className="flex flex-col gap-4 font-teachers">
               <input
                 type="text"
                 placeholder="Enter location"
-                onChange={(e) => handleLocationChange(e.target.value)} // Using debounced handler
+                onChange={(e) => handleLocationChange(e.target.value)} 
                 className="py-2 px-4 bg-[#FFEAD1] rounded-md text-black"
               />
             </div>
-
-            <div className="flex flex-col gap-4 font-teachers">
-              <select
-                id="sorting"
-                value={selectedOption}
-                onChange={(e) => setSelectedOption(e.target.value)}
-                className="py-2 px-4 bg-[#FFEAD1] rounded-md text-black"
-              >
-                <option value="">Atur Berdasarkan</option>
-                <option value="Harga">Harga</option>
-                <option value="Lokasi">Lokasi</option>
-                <option value="Jadwal Terdekat">Jadwal Terdekat</option>
-                <option value="Rekomendasi">Rekomendasi</option>
-              </select>
-            </div>
+            <Link href="/appointment-history">
+              <button className="px-4 py-3 rounded-xl font-teachers text-xl bg-[#CC8005] text-white">
+                Your Appointments
+              </button>
+            </Link>
           </div>
         </div>
 
         {/* Therapist Cards */}
         <div className="w-full lg:w-3/4">
           {loading ? (
-            <div><LoadingBouncer /></div>
+            <div>
+              <LoadingBouncer />
+            </div>
           ) : (
             <>
               {errorMessage ? (
