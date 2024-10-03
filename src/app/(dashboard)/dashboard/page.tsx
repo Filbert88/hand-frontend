@@ -1,6 +1,6 @@
-"use client"
-import { useRouter } from 'next/navigation'
-import Image from 'next/image';
+"use client";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 type AdminCardProps = {
   title: string;
@@ -9,9 +9,14 @@ type AdminCardProps = {
   onClick: () => void;
 };
 
-const AdminCard: React.FC<AdminCardProps> = ({ title, src, color, onClick }) => (
-  <div 
-    className={`p-6 rounded-lg shadow-md ${color} transition-transform hover:scale-105 hover:cursor-pointer`} 
+const AdminCard: React.FC<AdminCardProps> = ({
+  title,
+  src,
+  color,
+  onClick,
+}) => (
+  <div
+    className={`p-6 rounded-lg shadow-md ${color} transition-transform hover:scale-105 hover:cursor-pointer`}
     onClick={onClick}
   >
     <div className="flex flex-col items-center">
@@ -36,24 +41,46 @@ export default function AdminDashboard() {
   };
 
   const cards: CardData[] = [
-    { title: "Add Therapist", src: "/floatingBar/chatAnon.svg", color: "bg-[#CEC8BD]", path: "/dashboard/add?category=Therapist" },
-    { title: "Add Medications", src: "/floatingBar/medication.svg", color: "bg-[#E5CED6]", path: "/dashboard/add?category=Medications" },
-    { title: "Add Help", src: "/floatingBar/help.svg", color: "bg-[#CEE4E5]", path: "/dashboard/add?category=Help" },
-    { title: "Add Articles & Videos", src: "/floatingBar/article.svg", color: "bg-[#C8BDCE]", path: "/dashboard/add?category=Articles" },
+    {
+      title: "Add Therapist",
+      src: "/floatingBar/chatAnon.svg",
+      color: "bg-[#CEC8BD]",
+      path: "/dashboard/add?category=Therapist",
+    },
+    {
+      title: "Add Medications",
+      src: "/floatingBar/medication.svg",
+      color: "bg-[#E5CED6]",
+      path: "/dashboard/add?category=Medications",
+    },
+    {
+      title: "Add Help",
+      src: "/floatingBar/help.svg",
+      color: "bg-[#CEE4E5]",
+      path: "/dashboard/add?category=Help",
+    },
+    {
+      title: "Add Articles & Videos",
+      src: "/floatingBar/article.svg",
+      color: "bg-[#C8BDCE]",
+      path: "/dashboard/add?category=Articles",
+    },
   ];
 
   return (
     <div className="min-h-screen bg-[#524B4B] pt-28">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl sm:text-5xl font-bold text-[#FFEFE5] mb-8 text-center font-gloock">Hello, Admin!</h1>
+        <h1 className="text-4xl sm:text-5xl font-bold text-[#FFEFE5] mb-8 text-center font-gloock">
+          Hello, Admin!
+        </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {cards.map((card, index) => (
-            <AdminCard 
-              key={index} 
-              title={card.title} 
-              src={card.src} 
-              color={card.color} 
-              onClick={() => handleCardClick(card.path)} 
+            <AdminCard
+              key={index}
+              title={card.title}
+              src={card.src}
+              color={card.color}
+              onClick={() => handleCardClick(card.path)}
             />
           ))}
         </div>

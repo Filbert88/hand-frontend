@@ -2,8 +2,18 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, FormEvent, useEffect, Suspense } from "react";
 import { User, Pill, HelpCircle, BookOpen, ArrowLeft } from "lucide-react";
-
-export const dynamic = 'force-dynamic';
+import {
+  createTherapist,
+  CreateTherapistDTO,
+  uploadImage,
+} from "@/app/api/user";
+import { addMedication } from "@/app/api/medication";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import { toast } from "sonner";
+export const dynamic = "force-dynamic";
 
 type TherapistForm = {
   name: string;
@@ -18,13 +28,11 @@ type TherapistForm = {
 
 type MedicationsForm = {
   medName: string;
-  dosage: string;
-  sideEffects: string;
   stock: number;
   price: number;
   description: string;
   requiresPrescription: boolean;
-  image: File | null; 
+  image: File | null;
 };
 
 type HelpForm = {
@@ -59,17 +67,15 @@ export default function AddPage() {
     location: "",
     specialization: "",
     consultation: "",
-    appointmentRate: 0
+    appointmentRate: 0,
   });
   const [medicationsForm, setMedicationsForm] = useState<MedicationsForm>({
     medName: "",
-    dosage: "",
-    sideEffects: "",
     stock: 0,
     price: 0,
     description: "",
     requiresPrescription: false,
-    image: null, // Image upload field initialized
+    image: null,
   });
   const [helpForm, setHelpForm] = useState<HelpForm>({
     topic: "",
@@ -102,48 +108,60 @@ export default function AddPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    let apiUrl = "";
-    let payload = {};
-
-    switch (initialCategory) {
-      case "Therapist":
-        apiUrl = "/api/therapists";
-        payload = therapistForm;
-        break;
-      case "Medications":
-        apiUrl = "/api/medications";
-        payload = medicationsForm;
-        break;
-      case "Help":
-        apiUrl = "/api/help";
-        payload = helpForm;
-        break;
-      case "Articles":
-        apiUrl = "/api/media/create";
-        payload = articlesForm;
-        break;
-      default:
-        return;
-    }
-
     try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      if (initialCategory === "Therapist") {
+        const therapistPayload: CreateTherapistDTO = {
+          name: therapistForm.name,
+          email: therapistForm.email,
+          phone_number: therapistForm.phoneNumber,
+          password: therapistForm.password,
+          location: therapistForm.location,
+          specialization: therapistForm.specialization,
+          consultation: therapistForm.consultation,
+          appointment_rate: therapistForm.appointmentRate,
+        };
 
-      if (response.ok) {
-        alert("Successfully added!");
-        router.push("/dashboard");
-      } else {
-        alert("Failed to add. Please try again.");
+        const result = await createTherapist(therapistPayload);
+        if (result.success) {
+          toast.success("Therapist added successfully!");
+          router.push("/dashboard");
+        } else {
+          toast.error(`Failed to add therapist: ${result.message}`);
+        }
+      }
+
+      if (initialCategory === "Medications") {
+        let imageUrl = "";
+        if (medicationsForm.image) {
+          const uploadResult = await uploadImage(medicationsForm.image);
+          if (uploadResult.success) {
+            imageUrl = uploadResult.imageUrl;
+          } else {
+            toast.error(`Error uploading image: ${uploadResult.message}`);
+            return;
+          }
+        }
+
+        const medicationPayload = {
+          medName: medicationsForm.medName,
+          stock: medicationsForm.stock,
+          price: medicationsForm.price,
+          description: medicationsForm.description,
+          requiresPrescription: medicationsForm.requiresPrescription,
+          image_url: imageUrl,
+        };
+
+        const result = await addMedication(medicationPayload);
+        if (result.success) {
+          toast.success("Medication added successfully!");
+          router.push("/dashboard");
+        } else {
+          toast.error(`Failed to add medication: ${result.message}`);
+        }
       }
     } catch (error) {
-      console.error(error);
-      alert("Error occurred while adding the item.");
+      console.error("Error:", error);
+      toast.error("An error occurred while submitting the form.");
     }
   };
 
@@ -205,6 +223,24 @@ export default function AddPage() {
                     className="w-full p-2 border rounded-lg focus:outline-none"
                   />
                 </div>
+
+                {/* Add phone number field */}
+                <div>
+                  <label htmlFor="phoneNumber">Phone Number</label>
+                  <input
+                    id="phoneNumber"
+                    value={therapistForm.phoneNumber}
+                    onChange={(e) =>
+                      setTherapistForm({
+                        ...therapistForm,
+                        phoneNumber: e.target.value,
+                      })
+                    }
+                    placeholder="Enter phone number"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+
                 <div>
                   <label htmlFor="password">Password</label>
                   <input
@@ -250,58 +286,158 @@ export default function AddPage() {
                     className="w-full p-2 border rounded-lg focus:outline-none"
                   />
                 </div>
-         
+
+                {/* Consultation dropdown */}
+                <div>
+                  <label htmlFor="consultation">Consultation Type</label>
+                  <select
+                    id="consultation"
+                    value={therapistForm.consultation}
+                    onChange={(e) =>
+                      setTherapistForm({
+                        ...therapistForm,
+                        consultation: e.target.value,
+                      })
+                    }
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  >
+                    <option value="">Select a consultation type</option>
+                    <option value="online">Online</option>
+                    <option value="offline">Offline</option>
+                    <option value="hybrid">Hybrid</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="appointmentRate">Appointment Rate</label>
+                  <input
+                    id="appointmentRate"
+                    type="number"
+                    value={therapistForm.appointmentRate}
+                    onChange={(e) =>
+                      setTherapistForm({
+                        ...therapistForm,
+                        appointmentRate: parseFloat(e.target.value),
+                      })
+                    }
+                    placeholder="Enter appointment rate"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
               </>
             )}
+
             {initialCategory === "Medications" && (
               <>
-                <div>
-                  <label htmlFor="medName">Medication Name</label>
-                  <input
-                    id="medName"
-                    value={medicationsForm.medName}
-                    onChange={(e) =>
-                      setMedicationsForm({
-                        ...medicationsForm,
-                        medName: e.target.value,
-                      })
-                    }
-                    placeholder="Enter medication name"
-                    className="w-full p-2 border rounded-lg focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="dosage">Dosage</label>
-                  <input
-                    id="dosage"
-                    value={medicationsForm.dosage}
-                    onChange={(e) =>
-                      setMedicationsForm({
-                        ...medicationsForm,
-                        dosage: e.target.value,
-                      })
-                    }
-                    placeholder="Enter dosage"
-                    className="w-full p-2 border rounded-lg focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="sideEffects">Side Effects</label>
-                  <textarea
-                    id="sideEffects"
-                    value={medicationsForm.sideEffects}
-                    onChange={(e) =>
-                      setMedicationsForm({
-                        ...medicationsForm,
-                        sideEffects: e.target.value,
-                      })
-                    }
-                    placeholder="Enter potential side effects"
-                    className="w-full p-2 border rounded-lg focus:outline-none"
-                  />
-                </div>
+                <Card className="w-full max-w-2xl mx-auto">
+                  <CardHeader>
+                    <CardTitle className="text-2xl font-bold text-center">
+                      Medication Registration
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <label htmlFor="medName">Medication Name</label>
+                        <Input
+                          id="medName"
+                          value={medicationsForm.medName}
+                          onChange={(e) =>
+                            setMedicationsForm({
+                              ...medicationsForm,
+                              medName: e.target.value,
+                            })
+                          }
+                          placeholder="Enter medication name"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label htmlFor="stock">Stock</label>
+                        <Input
+                          id="stock"
+                          type="number"
+                          value={medicationsForm.stock.toString()}
+                          onChange={(e) =>
+                            setMedicationsForm({
+                              ...medicationsForm,
+                              stock: parseInt(e.target.value),
+                            })
+                          }
+                          placeholder="Enter stock quantity"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label htmlFor="price">Price</label>
+                        <Input
+                          id="price"
+                          type="number"
+                          value={medicationsForm.price.toString()}
+                          onChange={(e) =>
+                            setMedicationsForm({
+                              ...medicationsForm,
+                              price: parseFloat(e.target.value),
+                            })
+                          }
+                          placeholder="Enter price"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label htmlFor="requiresPrescription">
+                          Requires Prescription
+                        </label>
+                        <div className="flex items-center space-x-2">
+                          <Switch
+                            id="requiresPrescription"
+                            checked={medicationsForm.requiresPrescription}
+                            onCheckedChange={(checked: boolean) =>
+                              setMedicationsForm({
+                                ...medicationsForm,
+                                requiresPrescription: checked,
+                              })
+                            }
+                          />
+                          <label htmlFor="requiresPrescription">
+                            {medicationsForm.requiresPrescription
+                              ? "Yes"
+                              : "No"}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="description">Description</label>
+                      <Textarea
+                        id="description"
+                        value={medicationsForm.description}
+                        onChange={(e) =>
+                          setMedicationsForm({
+                            ...medicationsForm,
+                            description: e.target.value,
+                          })
+                        }
+                        placeholder="Enter medication description"
+                        rows={4}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="image">Image</label>
+                      <Input
+                        id="image"
+                        type="file"
+                        onChange={(e) =>
+                          setMedicationsForm({
+                            ...medicationsForm,
+                            image: e.target.files ? e.target.files[0] : null,
+                          })
+                        }
+                        className="cursor-pointer"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
               </>
             )}
+
             {initialCategory === "Help" && (
               <>
                 <div>
