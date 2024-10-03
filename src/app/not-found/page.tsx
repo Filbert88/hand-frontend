@@ -17,7 +17,7 @@ export default function NotFoundPage() {
     >
       <div className="flex flex-col md:flex-row items-center">
         <div className="md:text-right text-center pr-0 md:pr-8 mb-8 md:mb-0">
-          <h1 className="text-[6rem] md:text-[10rem] font-bold text-black">404</h1>
+          <h1 className="text-[6rem] md:text-[10rem] font-bold text-black font-gloock">404</h1>
         </div>
 
         <div className="border-l-4 border-black h-16 md:h-32 mx-0 md:mx-8 hidden md:block"></div>
