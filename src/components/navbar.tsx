@@ -55,13 +55,13 @@ export default function Navbar() {
 
   return (
     <nav className="fixed bg-transparent p-4 font-teachers w-screen z-[9999] ">
-      <div className="container mx-auto flex items-center justify-between">
+      <div className="container mx-auto flex items-start justify-between">
         <div className="flex lg:hidden">
           <Button variant="ghost" size="icon" aria-label="Menu" onClick={toggleMenu}>
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
         </div>
-        <div className="hidden lg:flex items-center space-x-16 py-3 text-xl">
+        <div className="hidden lg:flex space-x-16 py-3 text-xl">
           {!isLoggedIn ? (
             <>
               <Link href="/auth/login" className="text-gray-700 hover:text-gray-900 relative group pb-2">
@@ -133,7 +133,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       <div
-        className={`fixed top-0 left-0 w-64 h-full bg-gray-800 text-white p-5 flex flex-col items-center transform transition-transform duration-300 ease-in-out lg:hidden ${
+        className={`fixed top-0 left-0 w-48 h-full bg-gray-800 text-white p-5 flex flex-col items-center transform transition-transform duration-300 ease-in-out lg:hidden ${
           isMenuOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

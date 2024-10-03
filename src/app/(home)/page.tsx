@@ -43,24 +43,27 @@ export default function Home() {
                 />
               </div>
             </Link>
-            <span className="text-xs sm:text-sm text-center">{feature.name}</span>
+            <span className="font-teachers font-semibold text-m m:text-m text-center">{feature.name}</span>
           </div>
         ))}
       </div>
+      
 
       <div className="relative z-20">
         <div className="bg-white rounded-full py-2 px-4 inline-block mb-4 mt-6 sm:mt-10 z-20">
-          <p className="text-lg">Hi, I&apos;m Handy! Wanna talk?</p>
+          <p className="text-lg font-teachers">Hi, I&apos;m Handy! Wanna talk?</p>
         </div>
 
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-4 max-w-xl mt-6 sm:mt-10 z-20">
-        `&quot;It&apos;s never wrong to ask`&quot;
+        <h1 className="text-4xl font-gloock sm:text-6xl lg:text-7xl font-bold mb-4 max-w-xl mt-6 sm:mt-10 z-20">
+        &quot;It&apos;s never wrong to ask&quot;
         </h1>
       </div>
 
-      <div className="absolute bottom-0 right-0 z-10">
-        <Image src="/sun.svg" alt="Smiling sun" width={700} height={300} />
+      <div className="absolute  right-0 z-10 ">
+        <Image src="/sun.svg" alt="Smiling sun" width={500} height={500} />
       </div>
+
+      <div className="h-32"></div>
     </div>
   );
 }
