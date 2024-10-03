@@ -5,6 +5,7 @@ import TherapistCard from "@/components/TherapistCard";
 import { DatePicker } from "@/components/ui/datePicker";
 import { useRouter } from "next/navigation";
 import { fetchTherapists } from "../api/consultation";
+import LoadingBouncer from "@/components/Loading";
 
 function debounce<T extends (...args: Parameters<T>) => void>(
   func: T,
@@ -19,19 +20,19 @@ function debounce<T extends (...args: Parameters<T>) => void>(
 
 interface User {
   email: string;
-  image_url: string; // URL string for the user's image
+  image_url: string; 
   is_mobile_verified: boolean;
   name: string;
-  password: string; // Encrypted password or empty if not used
+  password: string; 
   phone_number: string;
-  role: string; // Role of the user, e.g., "therapist", "admin", etc.
+  role: string; 
 }
 
 interface Therapist {
   ID: string;
   AppointmentRate: number;
-  Consultation: string; // Assuming it's a string like "hybrid"
-  CreatedAt: string; // ISO date string
+  Consultation: string; 
+  CreatedAt: string; 
   Location: string;
   Specialization: string;
   UpdatedAt: string;
@@ -67,7 +68,6 @@ export default function ConsultationPage() {
       setLoading(true);
       const dateStr = formatDate(selectedDate);
 
-      // Fetch all therapists initially, without applying filter on the server
       const { therapists, errorMessage } = await fetchTherapists(
         dateStr,
         "",
@@ -94,7 +94,7 @@ export default function ConsultationPage() {
           therapist.Consultation === "hybrid"
         );
       }
-      return true; // If no filter, return all therapists
+      return true; 
     });
   };
 
@@ -130,6 +130,10 @@ export default function ConsultationPage() {
     // Redirect to the dynamic appointment page for the therapist
     router.push(`/appointment/${therapistId}`);
   };
+
+  if(loading){
+    return <LoadingBouncer />
+  }
 
   return (
     <div className="bg-[#FFF6EF] min-h-screen px-12 py-6 pt-28">
@@ -200,7 +204,7 @@ export default function ConsultationPage() {
         {/* Therapist Cards */}
         <div className="w-full lg:w-3/4">
           {loading ? (
-            <div>Loading therapists...</div>
+            <div><LoadingBouncer /></div>
           ) : (
             <>
               {errorMessage ? (

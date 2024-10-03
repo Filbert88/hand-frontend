@@ -24,6 +24,7 @@ import {
   fetchAppointmentHistory,
   AppointmentHistory,
 } from "../api/appointment";
+import LoadingBouncer from "../loading";
 
 export default function TransactionHistory() {
   const [filter, setFilter] = useState<string>("all");
@@ -77,7 +78,7 @@ export default function TransactionHistory() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div><LoadingBouncer /></div>;
   }
 
   if (error) {

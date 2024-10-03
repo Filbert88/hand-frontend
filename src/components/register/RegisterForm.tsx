@@ -6,6 +6,7 @@ import { Toaster, toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import LoadingBouncer from "../Loading";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -72,11 +73,13 @@ const RegisterForm: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [loading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    setIsLoading(true);
     // Simple validation
     if (!name || !email || !password || !confirmPassword || !phoneNumber) {
       toast.error("All fields are required");
@@ -119,7 +122,7 @@ const RegisterForm: React.FC = () => {
 
         setTimeout(() => {
           router.push("/auth/login");
-        }, 500);
+        }, 200);
       } else {
         const errorData = await response.json();
         toast.error(`Registration failed: ${errorData.message}`);
@@ -127,8 +130,14 @@ const RegisterForm: React.FC = () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (loading) {
+    return <LoadingBouncer />;
+  }
 
   return (
     <div className="flex flex-col space-y-4 bg-white shadow-lg p-8 rounded-lg max-w-lg mx-auto">

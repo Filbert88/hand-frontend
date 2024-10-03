@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { getTodayCheckIn, createCheckIn, updateCheckIn, CheckInData } from '../api/service'; // Adjust path as necessary
 import { toast } from 'sonner';
+import LoadingBouncer from '@/components/Loading';
 
 
 const emotions = [
@@ -53,11 +54,8 @@ export default function MoodTracker() {
     });
   }, []);
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
   const handleSave = async () => {
+    setIsLoading(true);
     const checkInData: CheckInData = {
       mood_score: selectedEmotion ? selectedEmotion + 1 : 1, // Adjust for zero-based index
       feelings: selectedFeelings.join(','), // Convert feelings to comma-separated string
@@ -81,8 +79,14 @@ export default function MoodTracker() {
     } catch (error) {
       console.log("Check-in failed")
       console.error('Error during check-in operation:', error);
+    }finally{
+      setIsLoading(false);
     }
   };
+
+  if (isLoading) {
+    return <LoadingBouncer />;
+  }
 
   return (
     <div className="min-h-screen max-h-screen bg-[#FFF2F2] flex items-center justify-center p-4 font-gloock">

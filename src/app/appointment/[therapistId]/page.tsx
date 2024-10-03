@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getTherapistDetails, Therapist } from "../../api/therapist";
 import { TherapistDetails } from "../../../components/appointment/TherapistDetails";
 import { Schedule } from "../../../components/appointment/Schedule";
+import LoadingBouncer from "@/components/Loading";
 
 interface TherapistPageProps {
   params: {
@@ -37,7 +38,7 @@ const TherapistPage: React.FC<TherapistPageProps> = ({ params }) => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div><LoadingBouncer /></div>;
   }
 
   if (!therapistDetails) {

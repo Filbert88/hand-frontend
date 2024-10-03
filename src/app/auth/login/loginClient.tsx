@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast, Toaster } from "sonner";
 import { setCookie } from "cookies-next";
+import LoadingBouncer from "@/components/Loading";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export default function LoginPage() {
@@ -10,8 +11,10 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+  const [loading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
     e.preventDefault();
 
     // Validate email and password fields
@@ -59,9 +62,7 @@ export default function LoginPage() {
 
       toast.success("Login successful!");
 
-      setTimeout(() => {
-        router.push("/");
-      }, 1500);
+      router.push("/");
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message || "Login failed. Please check your credentials.");
@@ -72,11 +73,17 @@ export default function LoginPage() {
         setError("An unknown error occurred.");
         toast.error("An unknown error occurred.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  if (loading) {
+    return <LoadingBouncer />;
+  }
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-blue-50">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-blue-50 p-6">
       <Toaster position="bottom-right" richColors />{" "}
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-auto w-full">
         <h1 className="text-3xl font-bold text-center mb-4">

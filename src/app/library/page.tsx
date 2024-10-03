@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import CarouselComponent from "./Carousel";
 import { fetchMedia } from "../api/media";
+import LoadingBouncer from "@/components/Loading";
 
 interface MediaItem {
   ID: string;
@@ -16,16 +17,28 @@ interface MediaItem {
 export default function Page() {
   const [articles, setArticles] = useState<MediaItem[]>([]);
   const [videos, setVideos] = useState<MediaItem[]>([]);
+  const [loading, setIsLoading] = useState(false);
 
   useEffect(() => {
     async function getMedia() {
-      const { articles, videos } = await fetchMedia();
-      setArticles(articles);
-      setVideos(videos);
+      setIsLoading(true); 
+      try {
+        const { articles, videos } = await fetchMedia();
+        setArticles(articles);
+        setVideos(videos);
+      } catch (error) {
+        console.error('Failed to fetch media:', error);
+      } finally {
+        setIsLoading(false); 
+      }
     }
-
+  
     getMedia();
   }, []);
+
+  if(loading){
+    return <LoadingBouncer />
+  }
 
   return (
     <div className="pt-24 sm:pt-28 sm:px-12 px-6 md:px-20">
