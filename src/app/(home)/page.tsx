@@ -59,11 +59,9 @@ export default function Home() {
         </h1>
       </div>
 
-      <div className="absolute  right-0 z-10 ">
+      <div className="absolute bottom-0 right-0 z-10 ">
         <Image src="/sun.svg" alt="Smiling sun" width={500} height={500} />
       </div>
-
-      <div className="h-32"></div>
     </div>
   );
 }
