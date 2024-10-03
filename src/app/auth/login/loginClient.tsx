@@ -62,7 +62,13 @@ export default function LoginPage() {
 
       toast.success("Login successful!");
 
-      router.push("/");
+      if (data.user.role === "admin"){
+        router.push("/admin-dashboard")
+      }else if(data.user.role === "therapist"){
+        router.push("/therapist-dashboard")
+      }else {
+        router.push("/");
+      }
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message || "Login failed. Please check your credentials.");

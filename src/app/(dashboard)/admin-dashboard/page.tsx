@@ -68,9 +68,9 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#524B4B] pt-28">
+    <div className="min-h-screen bg-white pt-28">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl sm:text-5xl font-bold text-[#FFEFE5] mb-8 text-center font-gloock">
+        <h1 className="text-4xl sm:text-5xl font-bold text-black mb-8 text-center font-gloock">
           Hello, Admin!
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
