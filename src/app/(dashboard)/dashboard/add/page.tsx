@@ -2,8 +2,8 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, FormEvent, useEffect, Suspense } from "react";
 import { User, Pill, HelpCircle, BookOpen, ArrowLeft } from "lucide-react";
-
-export const dynamic = 'force-dynamic';
+import { createTherapist, CreateTherapistDTO } from "@/app/api/user";
+export const dynamic = "force-dynamic";
 
 type TherapistForm = {
   name: string;
@@ -24,7 +24,7 @@ type MedicationsForm = {
   price: number;
   description: string;
   requiresPrescription: boolean;
-  image: File | null; 
+  image: File | null;
 };
 
 type HelpForm = {
@@ -59,7 +59,7 @@ export default function AddPage() {
     location: "",
     specialization: "",
     consultation: "",
-    appointmentRate: 0
+    appointmentRate: 0,
   });
   const [medicationsForm, setMedicationsForm] = useState<MedicationsForm>({
     medName: "",
@@ -102,48 +102,30 @@ export default function AddPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    let apiUrl = "";
-    let payload = {};
-
-    switch (initialCategory) {
-      case "Therapist":
-        apiUrl = "/api/therapists";
-        payload = therapistForm;
-        break;
-      case "Medications":
-        apiUrl = "/api/medications";
-        payload = medicationsForm;
-        break;
-      case "Help":
-        apiUrl = "/api/help";
-        payload = helpForm;
-        break;
-      case "Articles":
-        apiUrl = "/api/media/create";
-        payload = articlesForm;
-        break;
-      default:
-        return;
-    }
-
     try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      if (initialCategory === "Therapist") {
+        const therapistPayload: CreateTherapistDTO = {
+          name: therapistForm.name,
+          email: therapistForm.email,
+          phone_number: therapistForm.phoneNumber,
+          password: therapistForm.password,
+          location: therapistForm.location,
+          specialization: therapistForm.specialization,
+          consultation: therapistForm.consultation,
+          appointment_rate: therapistForm.appointmentRate,
+        };
 
-      if (response.ok) {
-        alert("Successfully added!");
-        router.push("/dashboard");
-      } else {
-        alert("Failed to add. Please try again.");
+        const result = await createTherapist(therapistPayload);
+        if (result.success) {
+          alert("Therapist added successfully!");
+          router.push("/dashboard"); // Redirect after success
+        } else {
+          alert(`Failed to add therapist: ${result.message}`);
+        }
       }
     } catch (error) {
-      console.error(error);
-      alert("Error occurred while adding the item.");
+      console.error("Error adding therapist:", error);
+      alert("An error occurred while adding the therapist.");
     }
   };
 
@@ -205,6 +187,24 @@ export default function AddPage() {
                     className="w-full p-2 border rounded-lg focus:outline-none"
                   />
                 </div>
+
+                {/* Add phone number field */}
+                <div>
+                  <label htmlFor="phoneNumber">Phone Number</label>
+                  <input
+                    id="phoneNumber"
+                    value={therapistForm.phoneNumber}
+                    onChange={(e) =>
+                      setTherapistForm({
+                        ...therapistForm,
+                        phoneNumber: e.target.value,
+                      })
+                    }
+                    placeholder="Enter phone number"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+
                 <div>
                   <label htmlFor="password">Password</label>
                   <input
@@ -250,9 +250,47 @@ export default function AddPage() {
                     className="w-full p-2 border rounded-lg focus:outline-none"
                   />
                 </div>
-         
+
+                {/* Consultation dropdown */}
+                <div>
+                  <label htmlFor="consultation">Consultation Type</label>
+                  <select
+                    id="consultation"
+                    value={therapistForm.consultation}
+                    onChange={(e) =>
+                      setTherapistForm({
+                        ...therapistForm,
+                        consultation: e.target.value,
+                      })
+                    }
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  >
+                    <option value="">Select a consultation type</option>
+                    <option value="online">Online</option>
+                    <option value="offline">Offline</option>
+                    <option value="hybrid">Hybrid</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="appointmentRate">Appointment Rate</label>
+                  <input
+                    id="appointmentRate"
+                    type="number"
+                    value={therapistForm.appointmentRate}
+                    onChange={(e) =>
+                      setTherapistForm({
+                        ...therapistForm,
+                        appointmentRate: parseFloat(e.target.value),
+                      })
+                    }
+                    placeholder="Enter appointment rate"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
               </>
             )}
+
             {initialCategory === "Medications" && (
               <>
                 <div>
