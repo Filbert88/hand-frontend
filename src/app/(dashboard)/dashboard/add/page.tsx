@@ -2,7 +2,12 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, FormEvent, useEffect, Suspense } from "react";
 import { User, Pill, HelpCircle, BookOpen, ArrowLeft } from "lucide-react";
-import { createTherapist, CreateTherapistDTO } from "@/app/api/user";
+import {
+  createTherapist,
+  CreateTherapistDTO,
+  uploadImage,
+} from "@/app/api/user";
+import { addMedication } from "@/app/api/medication";
 export const dynamic = "force-dynamic";
 
 type TherapistForm = {
@@ -18,8 +23,6 @@ type TherapistForm = {
 
 type MedicationsForm = {
   medName: string;
-  dosage: string;
-  sideEffects: string;
   stock: number;
   price: number;
   description: string;
@@ -63,13 +66,11 @@ export default function AddPage() {
   });
   const [medicationsForm, setMedicationsForm] = useState<MedicationsForm>({
     medName: "",
-    dosage: "",
-    sideEffects: "",
     stock: 0,
     price: 0,
     description: "",
     requiresPrescription: false,
-    image: null, // Image upload field initialized
+    image: null,
   });
   const [helpForm, setHelpForm] = useState<HelpForm>({
     topic: "",
@@ -123,9 +124,39 @@ export default function AddPage() {
           alert(`Failed to add therapist: ${result.message}`);
         }
       }
+
+      if (initialCategory === "Medications") {
+        let imageUrl = "";
+        if (medicationsForm.image) {
+          const uploadResult = await uploadImage(medicationsForm.image);
+          if (uploadResult.success) {
+            imageUrl = uploadResult.imageUrl;
+          } else {
+            alert(`Error uploading image: ${uploadResult.message}`);
+            return;
+          }
+        }
+
+        const medicationPayload = {
+          medName: medicationsForm.medName,
+          stock: medicationsForm.stock,
+          price: medicationsForm.price,
+          description: medicationsForm.description,
+          requiresPrescription: medicationsForm.requiresPrescription,
+          image_url: imageUrl,
+        };
+
+        const result = await addMedication(medicationPayload);
+        if (result.success) {
+          alert("Medication added successfully!");
+          router.push("/dashboard"); // Redirect after success
+        } else {
+          alert(`Failed to add medication: ${result.message}`);
+        }
+      }
     } catch (error) {
-      console.error("Error adding therapist:", error);
-      alert("An error occurred while adding the therapist.");
+      console.error("Error:", error);
+      alert("An error occurred while submitting the form.");
     }
   };
 
@@ -309,37 +340,86 @@ export default function AddPage() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="dosage">Dosage</label>
+                  <label htmlFor="stock">Stock</label>
                   <input
-                    id="dosage"
-                    value={medicationsForm.dosage}
+                    id="stock"
+                    type="number"
+                    value={medicationsForm.stock}
                     onChange={(e) =>
                       setMedicationsForm({
                         ...medicationsForm,
-                        dosage: e.target.value,
+                        stock: parseInt(e.target.value),
                       })
                     }
-                    placeholder="Enter dosage"
+                    placeholder="Enter stock quantity"
                     className="w-full p-2 border rounded-lg focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label htmlFor="sideEffects">Side Effects</label>
-                  <textarea
-                    id="sideEffects"
-                    value={medicationsForm.sideEffects}
+                  <label htmlFor="price">Price</label>
+                  <input
+                    id="price"
+                    type="number"
+                    value={medicationsForm.price}
                     onChange={(e) =>
                       setMedicationsForm({
                         ...medicationsForm,
-                        sideEffects: e.target.value,
+                        price: parseFloat(e.target.value),
                       })
                     }
-                    placeholder="Enter potential side effects"
+                    placeholder="Enter price"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="description">Description</label>
+                  <textarea
+                    id="description"
+                    value={medicationsForm.description}
+                    onChange={(e) =>
+                      setMedicationsForm({
+                        ...medicationsForm,
+                        description: e.target.value,
+                      })
+                    }
+                    placeholder="Enter medication description"
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="requiresPrescription">
+                    Requires Prescription
+                  </label>
+                  <input
+                    id="requiresPrescription"
+                    type="checkbox"
+                    checked={medicationsForm.requiresPrescription}
+                    onChange={(e) =>
+                      setMedicationsForm({
+                        ...medicationsForm,
+                        requiresPrescription: e.target.checked,
+                      })
+                    }
+                    className="w-full p-2 border rounded-lg focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="image">Image</label>
+                  <input
+                    id="image"
+                    type="file"
+                    onChange={(e) =>
+                      setMedicationsForm({
+                        ...medicationsForm,
+                        image: e.target.files ? e.target.files[0] : null,
+                      })
+                    }
                     className="w-full p-2 border rounded-lg focus:outline-none"
                   />
                 </div>
               </>
             )}
+
             {initialCategory === "Help" && (
               <>
                 <div>
