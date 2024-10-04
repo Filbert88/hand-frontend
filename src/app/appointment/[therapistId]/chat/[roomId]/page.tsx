@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import { Send } from 'lucide-react'
 import { createWebSocket } from '@/app/util/socket'
-import { useRouter } from 'next/navigation'
 import { ChatMessage } from '@/app/find/[roomId]/page'
 import { getCookie } from 'cookies-next'
 import { fetchChatMessages } from '@/app/api/service'
@@ -31,7 +30,6 @@ const ChatRoom: React.FC<ChatRoomProps> = ({params}) => {
   const [currentUserId, setCurrentUserId] = useState<string | undefined>();
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [ws, setWs] = useState<WebSocket | null>(null);
-  const router = useRouter();
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
@@ -100,6 +98,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({params}) => {
   }, [setWs]); // Ensure dependencies are correctly listed
 
   const handleSendMessage = (e: React.FormEvent) => {
+    e.preventDefault()
     if (ws && newMessage.trim()) {
 
       const messageDetail: MessageDetail = {

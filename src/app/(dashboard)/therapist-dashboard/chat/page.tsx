@@ -8,12 +8,6 @@ import { ChatMessage } from '@/app/find/[roomId]/page'
 import { getCookie } from 'cookies-next'
 import { createWebSocket } from '@/app/util/socket'
 
-interface User {
-  id: number
-  name: string
-  image_url: string
-}
-
 
 interface MessageDetail {
   room_id: string;
@@ -30,7 +24,6 @@ const ChatInterface: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([])
 
   const [newMessage, setNewMessage] = useState('')
-  const [roomId , setRoomId] = useState('')
   const [currentUserId, setCurrentUserId] = useState<string | undefined>();
   const [selectedRoom, setSelectedRoom] = useState<ChatRoom | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
